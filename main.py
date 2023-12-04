@@ -28,13 +28,13 @@ if QT4:  # ___ ______________ DEPENDENCIES __________________________
                               QTableWidgetItem, QTextCursor, QMenu, QAction, QHeaderView,
                               QPixmap, QListWidgetItem, QBrush, QColor)
 else:
-    from PySide2.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
-                                   QAction, QMenu, QTableWidgetItem, QListWidgetItem,
+    from PySide6.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
+                                   QMenu, QTableWidgetItem, QListWidgetItem,
                                    QFileDialog)
-    from PySide2.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
+    from PySide6.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
                                 QByteArray)
-    from PySide2.QtSql import QSqlDatabase, QSqlQuery
-    from PySide2.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor
+    from PySide6.QtSql import QSqlDatabase, QSqlQuery
+    from PySide6.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor, QAction, QActionGroup
 
 from secondary import *
 from gui_main import Ui_Base

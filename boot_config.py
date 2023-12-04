@@ -87,7 +87,7 @@ sys.excepthook = except_hook
 
 QT4 = True
 try:
-    import PySide
+    import PySide6
 except ImportError:
     QT4 = False
 FIRST_RUN = False
