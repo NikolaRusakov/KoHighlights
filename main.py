@@ -129,16 +129,16 @@ class Base(QMainWindow, Ui_Base):
         self.header_high_view = self.high_table.horizontalHeader()
         self.header_high_view.setDefaultAlignment(Qt.AlignLeft)
         # self.header_high_view.setResizeMode(HIGHLIGHT_H, QHeaderView.Stretch)
-        if QT4:
-            self.file_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
-            self.header_main.setMovable(True)
-            self.high_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
-            self.header_high_view.setMovable(True)
-        else:
-            self.file_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-            self.header_main.setSectionsMovable(True)
-            self.high_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-            self.header_high_view.setSectionsMovable(True)
+        # if QT4:
+        #     self.file_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
+        #     self.header_main.setMovable(True)
+        #     self.high_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
+        #     self.header_high_view.setMovable(True)
+        # else:
+        self.file_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.header_main.setSectionsMovable(True)
+        self.high_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.header_high_view.setSectionsMovable(True)
 
         self.splitter.setCollapsible(0, False)
         self.splitter.setCollapsible(1, False)

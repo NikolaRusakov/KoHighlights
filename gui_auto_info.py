@@ -7,31 +7,31 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide6 import QtCore, QtGui
+from PySide6 import QtCore, QtGui, QtWidgets
 
 class Ui_AutoInfo(object):
     def setupUi(self, AutoInfo):
         AutoInfo.setObjectName("AutoInfo")
         AutoInfo.setWindowModality(QtCore.Qt.NonModal)
         AutoInfo.resize(300, 100)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(AutoInfo.sizePolicy().hasHeightForWidth())
         AutoInfo.setSizePolicy(sizePolicy)
         AutoInfo.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         AutoInfo.setModal(True)
-        self.verticalLayout = QtGui.QVBoxLayout(AutoInfo)
+        self.verticalLayout = QtWidgets.QVBoxLayout(AutoInfo)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtGui.QLabel(AutoInfo)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.label = QtWidgets.QLabel(AutoInfo)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
-        self.label.setFrameShape(QtGui.QFrame.Box)
-        self.label.setFrameShadow(QtGui.QFrame.Raised)
+        self.label.setFrameShape(QtWidgets.QFrame.Box)
+        self.label.setFrameShadow(QtWidgets.QFrame.Raised)
         self.label.setText("")
         self.label.setTextFormat(QtCore.Qt.AutoText)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
@@ -43,6 +43,6 @@ class Ui_AutoInfo(object):
         QtCore.QMetaObject.connectSlotsByName(AutoInfo)
 
     def retranslateUi(self, AutoInfo):
-        AutoInfo.setWindowTitle(QtGui.QApplication.translate("AutoInfo", "Info", None, QtGui.QApplication.UnicodeUTF8))
+        AutoInfo.setWindowTitle(QtCore.QCoreApplication.translate("AutoInfo", "Info", None))
 
 import images_rc
