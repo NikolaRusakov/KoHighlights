@@ -7,7 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide import QtCore, QtGui
+from PySide6 import QtCore, QtGui
 
 class Ui_Status(object):
     def setupUi(self, Status):

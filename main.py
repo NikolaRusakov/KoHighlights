@@ -20,21 +20,21 @@ from os.path import (isdir, isfile, join, basename, splitext, dirname, split, ge
 from pprint import pprint
 
 
-if QT4:  # ___ ______________ DEPENDENCIES __________________________
-    from PySide.QtSql import QSqlDatabase, QSqlQuery
-    from PySide.QtCore import (Qt, QTimer, Slot, QThread, QMimeData, QModelIndex,
-                               QByteArray, QPoint)
-    from PySide.QtGui import (QMainWindow, QApplication, QMessageBox, QIcon, QFileDialog,
-                              QTableWidgetItem, QTextCursor, QMenu, QAction, QHeaderView,
-                              QPixmap, QListWidgetItem, QBrush, QColor)
-else:
-    from PySide6.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
-                                   QMenu, QTableWidgetItem, QListWidgetItem,
-                                   QFileDialog)
-    from PySide6.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
-                                QByteArray)
-    from PySide6.QtSql import QSqlDatabase, QSqlQuery
-    from PySide6.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor, QAction, QActionGroup
+# if QT4:  # ___ ______________ DEPENDENCIES __________________________
+#     from PySide.QtSql import QSqlDatabase, QSqlQuery
+#     from PySide.QtCore import (Qt, QTimer, Slot, QThread, QMimeData, QModelIndex,
+#                                QByteArray, QPoint)
+#     from PySide.QtGui import (QMainWindow, QApplication, QMessageBox, QIcon, QFileDialog,
+#                               QTableWidgetItem, QTextCursor, QMenu, QAction, QHeaderView,
+#                               QPixmap, QListWidgetItem, QBrush, QColor)
+# else:
+from PySide6.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
+                                QMenu, QTableWidgetItem, QListWidgetItem,
+                                QFileDialog)
+from PySide6.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
+                            QByteArray)
+from PySide6.QtSql import QSqlDatabase, QSqlQuery
+from PySide6.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor, QAction, QActionGroup
 
 from secondary import *
 from gui_main import Ui_Base
