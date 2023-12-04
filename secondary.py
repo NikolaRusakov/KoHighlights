@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from boot_config import *
 import re
+import json
 import webbrowser
 from functools import partial
 from distutils.version import LooseVersion
@@ -128,6 +129,14 @@ def get_book_text(title, authors, highlights, format_, line_break, space, text):
             h = h.replace("-", "\\-")
             highs.append(h)
         text += nl.join(highs) + "\n---\n"
+    elif format_ == ONE_JSON:
+        highlights_json= {};
+        for idx, high in enumerate(highlights):
+            date_text, high_comment, high_text, page_text, chapter = high
+            highlights_json[idx] = {"title": title, "authors": authors, "page": page_text,
+                        "date": date_text, "text": high_text, "comment": high_comment,
+                        "chapter": chapter}
+        text = json.dumps(highlights_json);
     return text
 
 

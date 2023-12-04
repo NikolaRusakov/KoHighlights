@@ -109,7 +109,7 @@ PAGE, HIGHLIGHT_TEXT, DATE, PAGE_ID, COMMENT = range(5)  # high_list item data
 (HIGHLIGHT_H, COMMENT_H, DATE_H, TITLE_H,
  AUTHOR_H, PAGE_H, CHAPTER_H, PATH_H) = range(8)  # high_table columns
 (MANY_TEXT, ONE_TEXT, MANY_HTML, ONE_HTML,
- MANY_CSV, ONE_CSV, MANY_MD, ONE_MD) = range(8)  # save_actions
+ MANY_CSV, ONE_CSV, MANY_MD, ONE_MD, ONE_JSON) = range(9)  # save_actions
 DB_MD5, DB_DATE, DB_PATH, DB_DATA = range(4)  # db data (columns)
 FILTER_ALL, FILTER_HIGH, FILTER_COMM, FILTER_TITLES = range(4)  # db data (columns)
 
