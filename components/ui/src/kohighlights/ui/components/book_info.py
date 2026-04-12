@@ -1,4 +1,5 @@
 """Book info panel — shows metadata for the currently selected book."""
+
 from __future__ import annotations
 
 import flet as ft
@@ -22,7 +23,7 @@ class BookInfoPanel:
             dense=True,
             multiline=True,
             max_lines=3,
-            border_color=ft.colors.TRANSPARENT,
+            border_color=ft.Colors.TRANSPARENT,
             filled=True,
             visible=False,
         )
@@ -35,11 +36,12 @@ class BookInfoPanel:
             ],
             spacing=4,
         )
-        self._toggle_icon = ft.Icon(ft.icons.EXPAND_MORE, size=16)
+        self._toggle_icon = ft.Icon(ft.Icons.EXPAND_MORE, size=16)
         self._toggle_btn = ft.TextButton(
             content=ft.Row(
                 [self._toggle_icon, ft.Text("Book Info", size=12)],
-                spacing=4, tight=True,
+                spacing=4,
+                tight=True,
             ),
             on_click=self._toggle,
         )
@@ -48,7 +50,7 @@ class BookInfoPanel:
                 self._toggle_btn,
                 ft.Container(
                     content=self._body,
-                    padding=ft.padding.symmetric(horizontal=8),
+                    padding=ft.Padding.symmetric(horizontal=8),
                 ),
             ],
             spacing=2,
@@ -60,7 +62,7 @@ class BookInfoPanel:
             label=label,
             read_only=True,
             dense=True,
-            border_color=ft.colors.TRANSPARENT,
+            border_color=ft.Colors.TRANSPARENT,
             filled=True,
             expand=w is None,
         )
@@ -70,8 +72,14 @@ class BookInfoPanel:
 
     def show(self, book: Book | None) -> None:
         if book is None:
-            for f in (self._title, self._author, self._series,
-                      self._language, self._pages, self._tags):
+            for f in (
+                self._title,
+                self._author,
+                self._series,
+                self._language,
+                self._pages,
+                self._tags,
+            ):
                 f.value = ""
             self._review.visible = False
         else:
@@ -89,6 +97,6 @@ class BookInfoPanel:
     def _toggle(self, e: ft.ControlEvent) -> None:
         self._body.visible = not self._body.visible
         self._toggle_icon.name = (
-            ft.icons.EXPAND_MORE if not self._body.visible else ft.icons.EXPAND_LESS
+            ft.Icons.EXPAND_MORE if not self._body.visible else ft.Icons.EXPAND_LESS
         )
         self.control.update()

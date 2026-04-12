@@ -15,7 +15,7 @@ typecheck = "mypy ."
 python = ">=3.10"
 
 [pypi-dependencies]
-flet            = ">=0.21.0"
+flet            = ">=0.84.0, <0.85"
 requests        = ">=2.31"
 beautifulsoup4  = ">=4.12"
 

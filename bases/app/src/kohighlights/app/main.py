@@ -8,6 +8,7 @@ Architecture: Polylith + Use-Case pattern.
                                 highlight_exporter, highlight_merger, lua_codec}
   bases/app  →  ui         →  {models, use_cases}
 """
+
 from __future__ import annotations
 
 import os
@@ -73,91 +74,6 @@ def main(page: ft.Page) -> None:  # noqa: C901
     page.padding = 0
     page.spacing = 0
 
-    # ── UI construction ───────────────────────────────────────────────────
-    about_dlg = build_about_dialog(page)
-    filter_bar = FilterBar(on_change=_on_filter_change)
-    export_dlg = ExportDialog(page, on_confirm=_on_export_confirmed)
-    book_info = BookInfoPanel()
-    highlights_panel = HighlightsPanel(
-        on_edit_comment=_on_edit_comment,
-        on_copy=_on_copy_highlight,
-        on_delete=_on_delete_highlight,
-    )
-    books_view = BooksView(
-        state=state,
-        on_selection_change=_on_book_selection_changed,
-        on_open_book=_on_open_book,
-    )
-    highlights_view = HighlightsView(
-        state=state,
-        on_selection_change=_on_highlights_view_selection_changed,
-        on_edit_comment=_on_edit_comment,
-        on_copy=_on_copy_highlight,
-        on_delete=_on_delete_highlight,
-    )
-    toolbar = AppToolbar(
-        state=state,
-        on_scan=_on_scan,
-        on_export=_on_export,
-        on_merge=_on_merge,
-        on_delete=_on_delete,
-        on_clear=_on_clear,
-        on_filter_toggle=_on_filter_toggle,
-        on_archive=_on_archive,
-        on_about=_on_about,
-        on_view_toggle=_on_view_toggle,
-        on_db_toggle=_on_db_toggle,
-    )
-
-    # ── Layout ────────────────────────────────────────────────────────────
-    books_left = ft.Column(
-        [
-            ft.Container(books_view.control, expand=True),
-            ft.Divider(height=1),
-            book_info.control,
-        ],
-        expand=True,
-        spacing=0,
-    )
-
-    books_layout = ft.Container(
-        content=ft.Row(
-            [
-                ft.Container(books_left, expand=3),
-                ft.VerticalDivider(width=1, thickness=1),
-                ft.Container(highlights_panel.control, expand=2, padding=8),
-            ],
-            expand=True,
-            spacing=0,
-        ),
-        expand=True,
-        visible=(state.view_mode == ViewMode.BOOKS),
-    )
-    highlights_layout = ft.Container(
-        content=highlights_view.control,
-        expand=True,
-        visible=(state.view_mode == ViewMode.HIGHLIGHTS),
-    )
-
-    page.add(
-        toolbar.control,
-        filter_bar.control,
-        ft.Divider(height=1),
-        ft.Container(
-            content=ft.Stack([books_layout, highlights_layout]),
-            expand=True,
-            padding=ft.padding.symmetric(horizontal=4),
-        ),
-    )
-
-    # ── Initial data load ─────────────────────────────────────────────────
-    if settings.db_mode:
-        _load_from_archive()
-
-    page.on_keyboard_event = _on_keyboard
-    page.on_window_event = _on_window_event
-    page.update()
-
     # =========================================================================
     # Event handlers
     # =========================================================================
@@ -178,16 +94,14 @@ def main(page: ft.Page) -> None:  # noqa: C901
                         books_view.refresh(state.displayed_books)
                         page.update()
 
-                scan_books.scan_directory(
-                    result.path, _found, state.loaded_paths
-                )
+                scan_books.scan_directory(result.path, _found, state.loaded_paths)
                 books_view.refresh(state.displayed_books)
                 toolbar.set_scanning(False)
                 page.update()
 
             threading.Thread(target=_worker, daemon=True).start()
 
-        picker = ft.FilePicker(on_result=_after_pick)
+        picker = ft.FilePicker(on_upload=_after_pick)
         page.overlay.append(picker)
         page.update()
         picker.get_directory_path(
@@ -212,7 +126,8 @@ def main(page: ft.Page) -> None:  # noqa: C901
         a, b = state.selected_books
         try:
             result = merge_highlights.merge_two_books(
-                a, b,
+                a,
+                b,
                 do_merge=do_merge,
                 do_sync_position=do_sync,
                 persist=not state.db_mode,
@@ -368,7 +283,9 @@ def main(page: ft.Page) -> None:  # noqa: C901
                 if not state.db_mode:
                     manage_books.save_book(book)
                 else:
-                    db_store.upsert(book.md5, book.path, book.modified_date, book.raw_data)
+                    db_store.upsert(
+                        book.md5, book.path, book.modified_date, book.raw_data
+                    )
                 if state.selected_books and book in state.selected_books:
                     highlights_panel.show(scan_books.get_highlights_for_book(book))
 
@@ -456,13 +373,98 @@ def main(page: ft.Page) -> None:  # noqa: C901
         settings_store.save(settings)
         db_store.close()
 
+    # ── UI construction ───────────────────────────────────────────────────
+    about_dlg = build_about_dialog(page)
+    filter_bar = FilterBar(on_change=_on_filter_change)
+    export_dlg = ExportDialog(page, on_confirm=_on_export_confirmed)
+    book_info = BookInfoPanel()
+    highlights_panel = HighlightsPanel(
+        on_edit_comment=_on_edit_comment,
+        on_copy=_on_copy_highlight,
+        on_delete=_on_delete_highlight,
+    )
+    books_view = BooksView(
+        state=state,
+        on_selection_change=_on_book_selection_changed,
+        on_open_book=_on_open_book,
+    )
+    highlights_view = HighlightsView(
+        state=state,
+        on_selection_change=_on_highlights_view_selection_changed,
+        on_edit_comment=_on_edit_comment,
+        on_copy=_on_copy_highlight,
+        on_delete=_on_delete_highlight,
+    )
+    toolbar = AppToolbar(
+        state=state,
+        on_scan=_on_scan,
+        on_export=_on_export,
+        on_merge=_on_merge,
+        on_delete=_on_delete,
+        on_clear=_on_clear,
+        on_filter_toggle=_on_filter_toggle,
+        on_archive=_on_archive,
+        on_about=_on_about,
+        on_view_toggle=_on_view_toggle,
+        on_db_toggle=_on_db_toggle,
+    )
+
+    # ── Layout ────────────────────────────────────────────────────────────
+    books_left = ft.Column(
+        [
+            ft.Container(books_view.control, expand=True),
+            ft.Divider(height=1),
+            book_info.control,
+        ],
+        expand=True,
+        spacing=0,
+    )
+
+    books_layout = ft.Container(
+        content=ft.Row(
+            [
+                ft.Container(books_left, expand=3),
+                ft.VerticalDivider(width=1, thickness=1),
+                ft.Container(highlights_panel.control, expand=2, padding=8),
+            ],
+            expand=True,
+            spacing=0,
+        ),
+        expand=True,
+        visible=(state.view_mode == ViewMode.BOOKS),
+    )
+    highlights_layout = ft.Container(
+        content=highlights_view.control,
+        expand=True,
+        visible=(state.view_mode == ViewMode.HIGHLIGHTS),
+    )
+
+    page.add(
+        toolbar.control,
+        filter_bar.control,
+        ft.Divider(height=1),
+        ft.Container(
+            content=ft.Stack([books_layout, highlights_layout]),
+            expand=True,
+            padding=ft.Padding.symmetric(horizontal=4),
+        ),
+    )
+
+    # ── Initial data load ─────────────────────────────────────────────────
+    if settings.db_mode:
+        _load_from_archive()
+
+    page.on_keyboard_event = _on_keyboard
+    page.on_window_event = _on_window_event
+    page.update()
+
 
 # ── CLI entry point ───────────────────────────────────────────────────────────
 
 
 def run() -> None:
     """Start the application."""
-    ft.app(target=main)
+    ft.run(main)
 
 
 if __name__ == "__main__":

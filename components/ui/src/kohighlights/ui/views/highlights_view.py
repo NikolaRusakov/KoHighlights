@@ -1,4 +1,5 @@
 """Highlights table view — all highlights across selected/loaded books."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -29,19 +30,19 @@ class HighlightsView:
 
         self._table = ft.DataTable(
             columns=[
-                ft.DataColumn(ft.Text("Highlight",  weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Comment",    weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Date",       weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Title",      weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Author",     weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Page",       weight=ft.FontWeight.BOLD)),
-                ft.DataColumn(ft.Text("Chapter",    weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Highlight", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Comment", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Date", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Title", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Author", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Page", weight=ft.FontWeight.BOLD)),
+                ft.DataColumn(ft.Text("Chapter", weight=ft.FontWeight.BOLD)),
             ],
             rows=[],
             column_spacing=12,
             horizontal_margin=8,
             data_row_min_height=32,
-            on_sort=self._on_sort,
+            # on_sort=self._on_sort,
             sort_column_index=2,
             sort_ascending=False,
         )
@@ -58,16 +59,15 @@ class HighlightsView:
 
     def _make_row(self, idx: int, h: Highlight) -> ft.DataRow:
         def _c(txt: str, tip: str = "") -> ft.DataCell:
-            return ft.DataCell(
-                ft.Text(txt, size=12, tooltip=tip or None)
-            )
+            return ft.DataCell(ft.Text(txt, size=12, tooltip=tip or None))
 
         return ft.DataRow(
             cells=[
                 ft.DataCell(
                     ft.Text(
                         h.text[:100] + ("…" if len(h.text) > 100 else ""),
-                        size=12, selectable=True,
+                        size=12,
+                        selectable=True,
                     ),
                     on_tap=lambda e, hi=h: self._on_selection([hi]),
                     on_double_tap=lambda e, hi=h: self._on_edit(hi),

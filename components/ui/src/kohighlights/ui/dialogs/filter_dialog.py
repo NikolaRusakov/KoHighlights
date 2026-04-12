@@ -1,4 +1,5 @@
 """Inline filter bar."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -12,10 +13,10 @@ class FilterBar:
     """Collapsible filter bar shown below the toolbar."""
 
     _TYPE_MAP = {
-        "ALL":        FilterType.ALL,
+        "ALL": FilterType.ALL,
         "HIGHLIGHTS": FilterType.HIGHLIGHTS,
-        "COMMENTS":   FilterType.COMMENTS,
-        "TITLES":     FilterType.TITLES,
+        "COMMENTS": FilterType.COMMENTS,
+        "TITLES": FilterType.TITLES,
     }
 
     def __init__(self, on_change: Callable[[FilterOptions], None]) -> None:
@@ -27,7 +28,7 @@ class FilterBar:
             dense=True,
             on_change=self._emit,
             on_submit=self._emit,
-            prefix_icon=ft.icons.SEARCH,
+            prefix_icon=ft.Icons.SEARCH,
             border_radius=20,
         )
         self._type_dd = ft.Dropdown(
@@ -35,15 +36,15 @@ class FilterBar:
             dense=True,
             border_radius=20,
             options=[
-                ft.dropdown.Option(key="ALL",        text="All"),
+                ft.dropdown.Option(key="ALL", text="All"),
                 ft.dropdown.Option(key="HIGHLIGHTS", text="Highlights"),
-                ft.dropdown.Option(key="COMMENTS",   text="Comments"),
-                ft.dropdown.Option(key="TITLES",     text="Book titles"),
+                ft.dropdown.Option(key="COMMENTS", text="Comments"),
+                ft.dropdown.Option(key="TITLES", text="Book titles"),
             ],
             value="ALL",
-            on_change=self._emit,
+            # on_change=self._emit,
         )
-        self._count = ft.Text("", size=12, color=ft.colors.GREY_600)
+        self._count = ft.Text("", size=12, color=ft.Colors.GREY_600)
         self._row = ft.Container(
             content=ft.Row(
                 [
@@ -51,7 +52,7 @@ class FilterBar:
                     self._type_dd,
                     self._count,
                     ft.IconButton(
-                        icon=ft.icons.CLOSE,
+                        icon=ft.Icons.CLOSE,
                         icon_size=16,
                         tooltip="Clear filter",
                         on_click=self._do_clear,
@@ -61,8 +62,8 @@ class FilterBar:
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=8,
             ),
-            padding=ft.padding.symmetric(horizontal=12, vertical=4),
-            bgcolor=ft.colors.SURFACE_VARIANT,
+            padding=ft.Padding.symmetric(horizontal=12, vertical=4),
+            bgcolor=ft.Colors.GREEN,
             visible=False,
         )
         self.control = self._row
@@ -78,10 +79,14 @@ class FilterBar:
         self._count.update()
 
     def _emit(self, e) -> None:
-        self._on_change(FilterOptions(
-            text=self._input.value or "",
-            filter_type=self._TYPE_MAP.get(self._type_dd.value or "ALL", FilterType.ALL),
-        ))
+        self._on_change(
+            FilterOptions(
+                text=self._input.value or "",
+                filter_type=self._TYPE_MAP.get(
+                    self._type_dd.value or "ALL", FilterType.ALL
+                ),
+            )
+        )
 
     def _do_clear(self, e) -> None:
         self._input.value = ""

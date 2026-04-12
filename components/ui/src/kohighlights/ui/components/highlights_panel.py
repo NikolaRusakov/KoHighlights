@@ -1,4 +1,5 @@
 """Highlights side-panel shown in Books view."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -21,13 +22,15 @@ class HighlightsPanel:
         self._on_copy = on_copy
         self._on_delete = on_delete
 
-        self._count_lbl = ft.Text("", size=12, color=ft.colors.GREY_600)
+        self._count_lbl = ft.Text("", size=12, color=ft.Colors.GREY_600)
         self._list = ft.ListView(controls=[], spacing=6, padding=8, expand=True)
         self.control = ft.Column(
             [
                 ft.Row(
-                    [ft.Text("Highlights", weight=ft.FontWeight.BOLD, size=13),
-                     self._count_lbl],
+                    [
+                        ft.Text("Highlights", weight=ft.FontWeight.BOLD, size=13),
+                        self._count_lbl,
+                    ],
                     spacing=6,
                 ),
                 ft.Divider(height=2),
@@ -43,23 +46,24 @@ class HighlightsPanel:
         self.control.update()
 
     def _make_card(self, h: Highlight) -> ft.Control:
-        meta = "  ·  ".join(
-            p for p in [f"p.{h.page}" if h.page else "", h.date] if p
-        )
+        meta = "  ·  ".join(p for p in [f"p.{h.page}" if h.page else "", h.date] if p)
         actions = ft.Row(
             [
                 ft.IconButton(
-                    icon=ft.icons.EDIT_OUTLINED, icon_size=15,
+                    icon=ft.Icons.EDIT_OUTLINED,
+                    icon_size=15,
                     tooltip="Edit comment",
                     on_click=lambda e, hi=h: self._on_edit(hi),
                 ),
                 ft.IconButton(
-                    icon=ft.icons.COPY_OUTLINED, icon_size=15,
+                    icon=ft.Icons.COPY_OUTLINED,
+                    icon_size=15,
                     tooltip="Copy text",
                     on_click=lambda e, hi=h: self._on_copy(hi),
                 ),
                 ft.IconButton(
-                    icon=ft.icons.DELETE_OUTLINED, icon_size=15,
+                    icon=ft.Icons.DELETE_OUTLINED,
+                    icon_size=15,
                     tooltip="Delete highlight",
                     on_click=lambda e, hi=h: self._on_delete(hi),
                 ),
@@ -71,21 +75,38 @@ class HighlightsPanel:
         inner = ft.Column(
             [
                 ft.Row(
-                    [ft.Text(meta, size=11, color=ft.colors.GREY_500),
-                     ft.Container(expand=True),
-                     actions],
+                    [
+                        ft.Text(meta, size=11, color=ft.Colors.GREY_500),
+                        ft.Container(expand=True),
+                        actions,
+                    ],
                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 ),
                 *(
-                    [ft.Text(f"[{h.chapter}]", size=11, italic=True,
-                              color=ft.colors.BLUE_GREY_400)]
-                    if h.chapter else []
+                    [
+                        ft.Text(
+                            f"[{h.chapter}]",
+                            size=11,
+                            italic=True,
+                            color=ft.Colors.BLUE_GREY_400,
+                        )
+                    ]
+                    if h.chapter
+                    else []
                 ),
                 ft.Text(h.text, selectable=True, size=13),
                 *(
-                    [ft.Text(f"● {h.comment}", size=12, italic=True,
-                              color=ft.colors.GREEN_700, selectable=True)]
-                    if h.comment else []
+                    [
+                        ft.Text(
+                            f"● {h.comment}",
+                            size=12,
+                            italic=True,
+                            color=ft.Colors.GREEN_700,
+                            selectable=True,
+                        )
+                    ]
+                    if h.comment
+                    else []
                 ),
             ],
             spacing=4,
@@ -94,7 +115,7 @@ class HighlightsPanel:
         card = ft.Container(
             content=inner,
             padding=10,
-            border=ft.border.all(1, ft.colors.OUTLINE_VARIANT),
+            border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
             border_radius=10,
         )
         # Show/hide action buttons on hover

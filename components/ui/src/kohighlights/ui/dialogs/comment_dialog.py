@@ -1,4 +1,5 @@
 """Comment editor dialog."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -40,7 +41,7 @@ def open_comment_dialog(
                 ft.Text(
                     highlight.text[:200] + ("…" if len(highlight.text) > 200 else ""),
                     size=12,
-                    color=ft.colors.GREY_600,
+                    color=ft.Colors.GREY_600,
                     italic=True,
                 ),
                 ft.Divider(),

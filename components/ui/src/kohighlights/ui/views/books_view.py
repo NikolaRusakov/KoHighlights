@@ -1,4 +1,5 @@
 """Books table view — lists all loaded/archived books."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -35,8 +36,8 @@ class BooksView:
             show_checkbox_column=True,
             sort_column_index=self._sort_col,
             sort_ascending=self._sort_asc,
-            on_sort=self._on_sort,
             column_spacing=12,
+            # on_sort=self._on_sort,
             horizontal_margin=8,
             data_row_min_height=28,
             data_row_max_height=40,
@@ -48,9 +49,20 @@ class BooksView:
         )
 
     def _make_columns(self) -> list[ft.DataColumn]:
-        labels = ["Title", "Author", "Type", "%", "Rating", "Highlights", "Modified", "Path"]
+        labels = [
+            "Title",
+            "Author",
+            "Type",
+            "%",
+            "Rating",
+            "Highlights",
+            "Modified",
+            "Path",
+        ]
         return [
-            ft.DataColumn(ft.Text(lbl, weight=ft.FontWeight.BOLD, size=12), on_sort=None)
+            ft.DataColumn(
+                ft.Text(lbl, weight=ft.FontWeight.BOLD, size=12), on_sort=None
+            )
             for lbl in labels
         ]
 
@@ -64,12 +76,10 @@ class BooksView:
 
     def _make_row(self, book: Book) -> ft.DataRow:
         is_sel = book.path in self._selected
-        color = ft.colors.RED_900 if book.status == "abandoned" else None
+        color = ft.Colors.RED_900 if book.status == "abandoned" else None
 
         def _c(txt: str, tip: str = "") -> ft.DataCell:
-            return ft.DataCell(
-                ft.Text(txt, color=color, size=12, tooltip=tip or None)
-            )
+            return ft.DataCell(ft.Text(txt, color=color, size=12, tooltip=tip or None))
 
         book_path = getattr(book, "book_path", "") or ""
         ext = book_path.rsplit(".", 1)[-1] if "." in book_path else ""
@@ -77,8 +87,12 @@ class BooksView:
         return ft.DataRow(
             cells=[
                 ft.DataCell(
-                    ft.Text(book.display_title, color=color, size=12,
-                            tooltip=book.display_title),
+                    ft.Text(
+                        book.display_title,
+                        color=color,
+                        size=12,
+                        tooltip=book.display_title,
+                    ),
                     on_double_tap=lambda e, b=book: self._on_open(b),
                 ),
                 _c(book.display_authors, book.display_authors),

@@ -1,4 +1,5 @@
 """About / info dialog."""
+
 from __future__ import annotations
 
 import webbrowser
@@ -25,21 +26,23 @@ def build_about_dialog(page: ft.Page) -> ft.AlertDialog:
                     f"{APP_NAME}  v{APP_VERSION}",
                     size=18,
                     weight=ft.FontWeight.BOLD,
-                    color=ft.colors.PRIMARY,
+                    color=ft.Colors.PRIMARY,
                 ),
                 ft.Text("View and export your KOReader book highlights."),
                 ft.Divider(),
-                ft.Row([
-                    ft.TextButton(
-                        "GitHub",
-                        icon=ft.icons.CODE,
-                        on_click=lambda e: webbrowser.open(_GITHUB_URL),
-                    ),
-                ]),
+                ft.Row(
+                    [
+                        ft.TextButton(
+                            "GitHub",
+                            icon=ft.Icons.CODE,
+                            on_click=lambda e: webbrowser.open(_GITHUB_URL),
+                        ),
+                    ]
+                ),
                 ft.Text(
                     "Built with Flet · Polylith · Python",
                     size=11,
-                    color=ft.colors.GREY_600,
+                    color=ft.Colors.GREY_600,
                     italic=True,
                 ),
             ],

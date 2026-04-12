@@ -1,4 +1,5 @@
 """Application toolbar built with Flet."""
+
 from __future__ import annotations
 
 from functools import partial
@@ -40,106 +41,106 @@ class AppToolbar:
         self._on_db_toggle = on_db_toggle
 
         self._scan_btn = ft.IconButton(
-            icon=ft.icons.FOLDER_OPEN_OUTLINED,
+            icon=ft.Icons.FOLDER_OPEN_OUTLINED,
             tooltip="Scan directory (Ctrl+L)",
             on_click=on_scan,
         )
         self._export_btn = ft.PopupMenuButton(
-            icon=ft.icons.SAVE_ALT_OUTLINED,
+            icon=ft.Icons.SAVE_ALT_OUTLINED,
             tooltip="Export highlights",
             items=self._export_items(),
             disabled=True,
         )
         self._merge_btn = ft.PopupMenuButton(
-            icon=ft.icons.MERGE_OUTLINED,
+            icon=ft.Icons.MERGE_OUTLINED,
             tooltip="Merge / sync (select 2 books)",
             items=[
                 ft.PopupMenuItem(
-                    text="Merge highlights",
+                    tooltip="Merge highlights",
                     on_click=lambda e: on_merge(True, False),
                 ),
                 ft.PopupMenuItem(
-                    text="Sync reading position",
+                    tooltip="Sync reading position",
                     on_click=lambda e: on_merge(False, True),
                 ),
-                ft.PopupMenuDivider(),
+                ft.Divider(),
                 ft.PopupMenuItem(
-                    text="Merge highlights + sync position",
+                    tooltip="Merge highlights + sync position",
                     on_click=lambda e: on_merge(True, True),
                 ),
             ],
             disabled=True,
         )
         self._delete_btn = ft.PopupMenuButton(
-            icon=ft.icons.DELETE_OUTLINE,
+            icon=ft.Icons.DELETE_OUTLINE,
             tooltip="Delete",
             items=[
                 ft.PopupMenuItem(
-                    text="Delete selected books' info",
+                    tooltip="Delete selected books' info",
                     on_click=lambda e: on_delete(0),
                 ),
                 ft.PopupMenuItem(
-                    text="Delete selected book files + info",
+                    tooltip="Delete selected book files + info",
                     on_click=lambda e: on_delete(1),
                 ),
-                ft.PopupMenuDivider(),
+                ft.Divider(),
                 ft.PopupMenuItem(
-                    text="Delete all missing books' info",
+                    tooltip="Delete all missing books' info",
                     on_click=lambda e: on_delete(2),
                 ),
             ],
             disabled=True,
         )
         self._archive_btn = ft.IconButton(
-            icon=ft.icons.ARCHIVE_OUTLINED,
+            icon=ft.Icons.ARCHIVE_OUTLINED,
             tooltip="Archive selected books to DB",
             on_click=lambda e: on_archive(e),
             disabled=True,
         )
         self._clear_btn = ft.IconButton(
-            icon=ft.icons.CLEAR_ALL,
+            icon=ft.Icons.CLEAR_ALL,
             tooltip="Clear list (Ctrl+Backspace)",
             on_click=on_clear,
         )
         self._filter_btn = ft.IconButton(
-            icon=ft.icons.FILTER_ALT_OUTLINED,
+            icon=ft.Icons.FILTER_ALT_OUTLINED,
             tooltip="Toggle filter (Ctrl+F)",
             on_click=on_filter_toggle,
         )
         self._view_seg = ft.SegmentedButton(
-            selected={"books"},
+            selected=["books"],
             allow_empty_selection=False,
             allow_multiple_selection=False,
             segments=[
                 ft.Segment(
                     value="books",
-                    icon=ft.Icon(ft.icons.MENU_BOOK_OUTLINED),
+                    icon=ft.Icon(ft.Icons.MENU_BOOK_OUTLINED),
                     label=ft.Text("Books"),
                 ),
                 ft.Segment(
                     value="highlights",
-                    icon=ft.Icon(ft.icons.FORMAT_QUOTE_OUTLINED),
+                    icon=ft.Icon(ft.Icons.FORMAT_QUOTE_OUTLINED),
                     label=ft.Text("Highlights"),
                 ),
             ],
             on_change=self._view_changed,
         )
         self._db_seg = ft.SegmentedButton(
-            selected={"loaded"},
+            selected=["loaded"],
             allow_empty_selection=False,
             allow_multiple_selection=False,
             segments=[
-                ft.Segment(value="loaded",   label=ft.Text("Loaded")),
+                ft.Segment(value="loaded", label=ft.Text("Loaded")),
                 ft.Segment(
                     value="archived",
                     label=ft.Text("Archived"),
-                    icon=ft.Icon(ft.icons.STORAGE_OUTLINED),
+                    icon=ft.Icon(ft.Icons.STORAGE_OUTLINED),
                 ),
             ],
             on_change=self._db_mode_changed,
         )
         self._about_btn = ft.IconButton(
-            icon=ft.icons.INFO_OUTLINE,
+            icon=ft.Icons.INFO_OUTLINE,
             tooltip="About (Ctrl+I)",
             on_click=lambda e: on_about(e),
         )
@@ -171,8 +172,8 @@ class AppToolbar:
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=4,
             ),
-            padding=ft.padding.symmetric(horizontal=8, vertical=4),
-            bgcolor=ft.colors.SURFACE_VARIANT,
+            padding=ft.Padding.symmetric(horizontal=8, vertical=4),
+            bgcolor=ft.Colors.BLACK_26,
         )
 
     def update_state(self) -> None:
@@ -190,36 +191,36 @@ class AppToolbar:
         self.control.update()
 
     def _view_changed(self, e: ft.ControlEvent) -> None:
-        val = list(e.data)[0]
-        self._on_view_toggle(
-            ViewMode.BOOKS if val == "books" else ViewMode.HIGHLIGHTS
-        )
+        val = e.control.selected[0]
+        self._on_view_toggle(ViewMode.BOOKS if val == "books" else ViewMode.HIGHLIGHTS)
 
     def _db_mode_changed(self, e: ft.ControlEvent) -> None:
-        val = list(e.data)[0]
+        val = e.control.selected[0]
         self._on_db_toggle(val == "archived")
 
     def _export_items(self) -> list[ft.PopupMenuItem]:
         groups: list[tuple[str, ExportFormat, ExportMode]] = [
-            ("Individual TXT files",      ExportFormat.TXT,      ExportMode.MANY),
-            ("Combined TXT file",         ExportFormat.TXT,      ExportMode.ONE),
-            ("Individual HTML files",     ExportFormat.HTML,     ExportMode.MANY),
-            ("Combined HTML file",        ExportFormat.HTML,     ExportMode.ONE),
-            ("Individual CSV files",      ExportFormat.CSV,      ExportMode.MANY),
-            ("Combined CSV file",         ExportFormat.CSV,      ExportMode.ONE),
+            ("Individual TXT files", ExportFormat.TXT, ExportMode.MANY),
+            ("Combined TXT file", ExportFormat.TXT, ExportMode.ONE),
+            ("Individual HTML files", ExportFormat.HTML, ExportMode.MANY),
+            ("Combined HTML file", ExportFormat.HTML, ExportMode.ONE),
+            ("Individual CSV files", ExportFormat.CSV, ExportMode.MANY),
+            ("Combined CSV file", ExportFormat.CSV, ExportMode.ONE),
             ("Individual Markdown files", ExportFormat.MARKDOWN, ExportMode.MANY),
-            ("Combined Markdown file",    ExportFormat.MARKDOWN, ExportMode.ONE),
-            ("Combined JSON file",        ExportFormat.JSON,     ExportMode.ONE),
+            ("Combined Markdown file", ExportFormat.MARKDOWN, ExportMode.ONE),
+            ("Combined JSON file", ExportFormat.JSON, ExportMode.ONE),
         ]
         items: list[ft.PopupMenuItem] = []
         last_fmt: ExportFormat | None = None
         for label, fmt, mode in groups:
             if last_fmt and last_fmt != fmt:
-                items.append(ft.PopupMenuDivider())
-            items.append(ft.PopupMenuItem(
-                text=label,
-                on_click=partial(self._export_clicked, fmt, mode),
-            ))
+                items.append(ft.Divider())
+            items.append(
+                ft.PopupMenuItem(
+                    tooltip=label,
+                    on_click=partial(self._export_clicked, fmt, mode),
+                )
+            )
             last_fmt = fmt
         return items
 

@@ -1,4 +1,5 @@
 """Export destination picker."""
+
 from __future__ import annotations
 
 from typing import Callable
@@ -11,14 +12,16 @@ from kohighlights.models import ExportFormat, ExportMode, ExportOptions
 class ExportDialog:
     """Wraps a FilePicker for selecting export destination."""
 
-    def __init__(self, page: ft.Page, on_confirm: Callable[[ExportOptions], None]) -> None:
+    def __init__(
+        self, page: ft.Page, on_confirm: Callable[[ExportOptions], None]
+    ) -> None:
         self._page = page
         self._on_confirm = on_confirm
         self._fmt: ExportFormat | None = None
         self._mode: ExportMode | None = None
 
-        self._picker = ft.FilePicker(on_result=self._on_result)
-        page.overlay.append(self._picker)
+        # self._picker = ft.FilePicker(on_upload=self._on_result)
+        # page.overlay.append(self._picker)
 
     def open(self, fmt: ExportFormat, mode: ExportMode) -> None:
         self._fmt = fmt
@@ -28,11 +31,11 @@ class ExportDialog:
             self._picker.get_directory_path(dialog_title="Select export folder")
         else:
             ext_map = {
-                ExportFormat.TXT:      "txt",
-                ExportFormat.HTML:     "html",
-                ExportFormat.CSV:      "csv",
+                ExportFormat.TXT: "txt",
+                ExportFormat.HTML: "html",
+                ExportFormat.CSV: "csv",
                 ExportFormat.MARKDOWN: "md",
-                ExportFormat.JSON:     "json",
+                ExportFormat.JSON: "json",
             }
             ext = ext_map.get(fmt, "txt")
             self._picker.save_file(
@@ -49,8 +52,10 @@ class ExportDialog:
         if not path:
             return
         if self._fmt is not None and self._mode is not None:
-            self._on_confirm(ExportOptions(
-                format=self._fmt,
-                mode=self._mode,
-                output_dir=path,
-            ))
+            self._on_confirm(
+                ExportOptions(
+                    format=self._fmt,
+                    mode=self._mode,
+                    output_dir=path,
+                )
+            )
