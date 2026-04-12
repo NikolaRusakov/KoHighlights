@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "kohighlights"
+version = "2.0.0"
+description = "KOReader highlights manager — Flet desktop application"
+authors = ["noEmbryo"]
+license = "GPL-3.0"
+readme = "../../README.md"
+
+# All component + base sources are declared as local path dependencies.
+# `poetry install` in this directory gives a fully runnable app.
+[tool.poetry.dependencies]
+python = "^3.10"
+flet = ">=0.21.0"
+requests = "^2.31"
+beautifulsoup4 = "^4.12"
+
+# Polylith bricks — all paths relative to this pyproject.toml
+kohighlights-models             = {path = "../../components/models",             develop = true}
+kohighlights-lua-codec          = {path = "../../components/lua_codec",          develop = true}
+kohighlights-book-store         = {path = "../../components/book_store",         develop = true}
+kohighlights-file-scanner       = {path = "../../components/file_scanner",       develop = true}
+kohighlights-highlight-exporter = {path = "../../components/highlight_exporter", develop = true}
+kohighlights-highlight-merger   = {path = "../../components/highlight_merger",   develop = true}
+kohighlights-use-cases          = {path = "../../components/use_cases",          develop = true}
+kohighlights-ui                 = {path = "../../components/ui",                 develop = true}
+kohighlights-app                = {path = "../../bases/app",                     develop = true}
+
+[tool.poetry.scripts]
+kohighlights = "kohighlights.app.main:run"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4"
+pytest-asyncio = "^0.23"
+mypy = "^1.5"
+ruff = "^0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# ── Polylith workspace metadata ─────────────────────────────────────────────
+[tool.polylith.bricks]
+"../../bases/app/src"                   = ["kohighlights/app"]
+"../../components/models/src"           = ["kohighlights/models"]
+"../../components/lua_codec/src"        = ["kohighlights/lua_codec"]
+"../../components/book_store/src"       = ["kohighlights/book_store"]
+"../../components/file_scanner/src"     = ["kohighlights/file_scanner"]
+"../../components/highlight_exporter/src" = ["kohighlights/highlight_exporter"]
+"../../components/highlight_merger/src" = ["kohighlights/highlight_merger"]
+"../../components/use_cases/src"        = ["kohighlights/use_cases"]
+"../../components/ui/src"               = ["kohighlights/ui"]

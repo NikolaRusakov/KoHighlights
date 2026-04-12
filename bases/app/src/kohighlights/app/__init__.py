@@ -1,0 +1,1 @@
+"""KOHighlights application entry point."""

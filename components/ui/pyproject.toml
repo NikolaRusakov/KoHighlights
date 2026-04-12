@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "kohighlights-ui"
+version = "2.0.0"
+description = "KoHighlights – Flet UI component"
+authors = ["noEmbryo"]
+packages = [{include = "kohighlights", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flet = ">=0.21.0"
+kohighlights-models    = {path = "../../components/models",    develop = true}
+kohighlights-use-cases = {path = "../../components/use_cases", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

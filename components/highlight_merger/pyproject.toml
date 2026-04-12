@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "kohighlights-highlight-merger"
+version = "2.0.0"
+description = "KoHighlights – highlight merge/sync between devices"
+authors = ["noEmbryo"]
+packages = [{include = "kohighlights", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+kohighlights-models    = {path = "../../components/models",    develop = true}
+kohighlights-lua-codec = {path = "../../components/lua_codec", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

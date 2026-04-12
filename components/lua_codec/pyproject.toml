@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "kohighlights-lua-codec"
+version = "2.0.0"
+description = "KoHighlights – Lua metadata file codec"
+authors = ["noEmbryo"]
+packages = [{include = "kohighlights", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

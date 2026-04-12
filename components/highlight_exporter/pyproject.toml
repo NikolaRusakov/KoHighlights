@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "kohighlights-highlight-exporter"
+version = "2.0.0"
+description = "KoHighlights – multi-format highlight exporter"
+authors = ["noEmbryo"]
+packages = [{include = "kohighlights", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+kohighlights-models = {path = "../../components/models", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
