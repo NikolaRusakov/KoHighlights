@@ -78,36 +78,31 @@ def main(page: ft.Page) -> None:  # noqa: C901
     # Event handlers
     # =========================================================================
 
-    def _on_scan(e) -> None:
-        def _after_pick(result: ft.FilePickerResultEvent) -> None:
-            if not result.path:
-                return
-            settings.last_dir = result.path
-            toolbar.set_scanning(True)
-
-            def _worker() -> None:
-                def _found(book: Book) -> None:
-                    state.books.append(book)
-                    state.loaded_paths.add(book.path)
-                    state.displayed_books = list(state.books)
-                    if len(state.books) % 5 == 0:
-                        books_view.refresh(state.displayed_books)
-                        page.update()
-
-                scan_books.scan_directory(result.path, _found, state.loaded_paths)
-                books_view.refresh(state.displayed_books)
-                toolbar.set_scanning(False)
-                page.update()
-
-            threading.Thread(target=_worker, daemon=True).start()
-
-        picker = ft.FilePicker(on_upload=_after_pick)
-        page.overlay.append(picker)
-        page.update()
-        picker.get_directory_path(
+    async def _on_scan(e) -> None:
+        path = await picker.get_directory_path(
             dialog_title="Select folder to scan for KOReader metadata",
             initial_directory=settings.last_dir or str(Path.home()),
         )
+        if not path:
+            return
+        settings.last_dir = path
+        toolbar.set_scanning(True)
+
+        def _worker() -> None:
+            def _found(book: Book) -> None:
+                state.books.append(book)
+                state.loaded_paths.add(book.path)
+                state.displayed_books = list(state.books)
+                if len(state.books) % 5 == 0:
+                    books_view.refresh(state.displayed_books)
+                    page.update()
+
+            scan_books.scan_directory(path, _found, state.loaded_paths)
+            books_view.refresh(state.displayed_books)
+            toolbar.set_scanning(False)
+            page.update()
+
+        threading.Thread(target=_worker, daemon=True).start()
 
     def _on_export(fmt: ExportFormat, mode: ExportMode) -> None:
         if not state.selected_books:
@@ -374,6 +369,7 @@ def main(page: ft.Page) -> None:  # noqa: C901
         db_store.close()
 
     # ── UI construction ───────────────────────────────────────────────────
+    picker = ft.FilePicker()  # Service: auto-registers with page._services
     about_dlg = build_about_dialog(page)
     filter_bar = FilterBar(on_change=_on_filter_change)
     export_dlg = ExportDialog(page, on_confirm=_on_export_confirmed)

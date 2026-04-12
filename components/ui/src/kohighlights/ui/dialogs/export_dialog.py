@@ -20,8 +20,10 @@ class ExportDialog:
         self._fmt: ExportFormat | None = None
         self._mode: ExportMode | None = None
 
-        # self._picker = ft.FilePicker(on_upload=self._on_result)
-        # page.overlay.append(self._picker)
+        self._picker = ft.FilePicker(
+            on_upload=self._on_result,
+        )
+        page.overlay.append(self._picker)
 
     def open(self, fmt: ExportFormat, mode: ExportMode) -> None:
         self._fmt = fmt
