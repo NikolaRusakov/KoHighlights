@@ -16,8 +16,29 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.flet.dev_packages]
+kohighlights-models             = "../../components/models"
+kohighlights-lua-codec          = "../../components/lua_codec"
+kohighlights-book-store         = "../../components/book_store"
+kohighlights-file-scanner       = "../../components/file_scanner"
+kohighlights-highlight-exporter = "../../components/highlight_exporter"
+kohighlights-highlight-merger   = "../../components/highlight_merger"
+kohighlights-use-cases          = "../../components/use_cases"
+kohighlights-ui                 = "../../components/ui"
+# kohighlights-app                = "../../bases/app"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/kohighlights"]
 
 [tool.hatch.build.targets.editable]
 path = "src"
+
+[tool.flet]
+desktop_flavor = "light"    # Change to "full" to use flet-audio and flet-video
+org = "solutions.doto"
+product = "kohighlights"
+company = "Doto Solutions"
+copyright = "Copyright (C) 2020-2026 by Doto Solutions"
+
+[tool.flet.app]
+path = "src/kohighlights/app"

@@ -6,14 +6,17 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
 
 [tasks]
-run = "python -m kohighlights.app.main"
-dev = "flet run bases/app/src/kohighlights/app/main.py"
-android = "flet run --android bases/app/src/kohighlights/app/main.py"
-ios = "flet run --ios bases/app/src/kohighlights/app/main.py"
-flet-web = "python -m kohighlights.app.main --web"
-test = "pytest"
-lint = "ruff check ."
-typecheck = "mypy ."
+run          = "python -m kohighlights.app.main"
+dev          = "flet run bases/app/src/kohighlights/app/main.py"
+android      = "flet run --android bases/app/src/kohighlights/app/main.py"
+ios          = "flet run --ios bases/app/src/kohighlights/app/main.py"
+flet-web     = "python -m kohighlights.app.main --web"
+test         = "pytest"
+lint         = "ruff check ."
+typecheck    = "mypy ."
+build-apk    = "flet build apk --module-name kohighlights-app.app.main --verbose"
+build-ios    = "flet build ipa --module-name kohighlights.app.main --verbose"
+build-ios-sim = "flet build ios-simulator --module-name kohighlights.app.main --verbose"
 
 [dependencies]
 python = ">=3.10"
@@ -46,3 +49,14 @@ polylith-cli = ">=0.7"
 
 [environments]
 dev = { features = ["dev"], solve-group = "default" }
+
+[tool.flet]
+desktop_flavor = "light"    # Change to "full" to use flet-audio and flet-video
+org = "solutions.doto"
+product = "kohighlights"
+company = "Doto Solutions"
+copyright = "Copyright (C) 2020-2026 by Doto Solutions"
+
+[tool.flet.app]
+path = "src"
+# path = "bases/app/src/kohighlights/app"

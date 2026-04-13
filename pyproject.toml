@@ -1,3 +1,60 @@
+[project]
+name = "kohighlights"
+version = "2.0.0"
+description = "KOReader highlights manager — Flet multiplatform application"
+requires-python = ">=3.10"
+dependencies = [
+    "flet>=0.84.0,<0.85",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+]
+
+# ── Flet build ───────────────────────────────────────────────────────────────
+
+[tool.flet]
+product = "KOHighlights"
+org     = "com.noEmbryo"        # change to your reverse-domain org
+
+[tool.flet.app]
+# module  = "kohighlights-app.main"
+exclude = [".git", ".pixi", ".venv", "build", "tests"]
+path = "src"
+
+[tool.flet.compile]
+app      = true
+packages = true
+
+# Polylith bricks — installed from local paths during flet build
+[tool.flet.dev_packages]
+kohighlights-models             = "components/models"
+kohighlights-lua-codec          = "components/lua_codec"
+kohighlights-book-store         = "components/book_store"
+kohighlights-file-scanner       = "components/file_scanner"
+kohighlights-highlight-exporter = "components/highlight_exporter"
+kohighlights-highlight-merger   = "components/highlight_merger"
+kohighlights-use-cases          = "components/use_cases"
+kohighlights-ui                 = "components/ui"
+kohighlights-app                = "bases/app"
+
+# ── iOS ──────────────────────────────────────────────────────────────────────
+# Requires: macOS + Xcode 15+ + CocoaPods 1.16+ + Apple Developer account
+#
+# Steps before first build:
+#   1. Set team = your 10-char Apple Developer Team ID
+#   2. Register Bundle ID in Apple Developer Portal
+#   3. Create Distribution certificate + Provisioning Profile
+#   4. Install both in Keychain / ~/Library/MobileDevice/Provisioning Profiles/
+[tool.flet.ios]
+# team      = "XXXXXXXXXX"              # FILL IN: Apple Developer Team ID
+# bundle_id = "com.noEmbryo.kohighlights"  # override if different from org+name
+
+[tool.flet.ios.info_plist]
+# Allow users to share/access .sdr files via Finder/iTunes
+UIFileSharingEnabled          = true
+LSSupportsOpeningDocumentsInPlace = true
+
+# ── Tools ─────────────────────────────────────────────────────────────────────
+
 [tool.pytest.ini_options]
 testpaths = ["components", "bases"]
 

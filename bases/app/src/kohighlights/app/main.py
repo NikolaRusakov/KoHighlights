@@ -18,6 +18,7 @@ import threading
 from pathlib import Path
 
 import flet as ft
+import flet_permission_handler as fph
 
 from kohighlights.book_store import BookStore, SettingsStore
 from kohighlights.file_scanner.scanner import scan_for_books
@@ -57,6 +58,13 @@ def main(page: ft.Page) -> None:  # noqa: C901
     """Build and run the KOHighlights Flet application."""
 
     # ── Bootstrap ────────────────────────────────────────────────────────
+
+    # fph.register_permissions(page, ["filesystem"], on_denied=lambda: page.close())
+    ph = fph.PermissionHandler()
+    ph.request(
+        [fph.Permission.STORAGE, fph.Permission.MANAGE_EXTERNAL_STORAGE],
+        on_denied=lambda: page.close(),
+    )
     settings_store = SettingsStore()
     settings = settings_store.load()
 
