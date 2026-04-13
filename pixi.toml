@@ -25,7 +25,7 @@ python = ">=3.10"
 flet = ">=0.84.0, <0.85"
 requests = ">=2.31"
 beautifulsoup4 = ">=4.12"
-
+flet-permission-handler = ">=0.84.0, <0.85.0"
 # Polylith bricks — installed as editable path packages
 kohighlights-models = { path = "components/models", editable = true }
 kohighlights-lua-codec = { path = "components/lua_codec", editable = true }
@@ -35,7 +35,7 @@ kohighlights-highlight-exporter = { path = "components/highlight_exporter", edit
 kohighlights-highlight-merger = { path = "components/highlight_merger", editable = true }
 kohighlights-use-cases = { path = "components/use_cases", editable = true }
 kohighlights-ui = { path = "components/ui", editable = true }
-kohighlights-app = { path = "bases/app", editable = true }
+# kohighlights-app = { path = "bases/app", editable = true }
 flet-desktop = ">=0.84.0, <0.85"
 flet-cli = ">=0.84.0, <0.85"
 flet-web = ">=0.84.0, <0.85"

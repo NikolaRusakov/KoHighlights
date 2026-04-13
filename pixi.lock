@@ -47,6 +47,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -84,7 +85,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/b5/e8/dbf020b4d98251a9860752a094d09a65e1b436ad181faf929983f697048f/watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/b4/36/ded8aebea91919485b7bbabbd14f5f359326cb5ec218cd67074d1e426d74/watchfiles-1.1.1-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/63/bc/d3e208028de777087e6fb2b122051a6ff7bbcca0d6df9d9c2bf1dd869ae9/websockets-16.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -126,6 +126,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -163,7 +164,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/7d/7f3d619e951c88ed75c6037b246ddcf2d322812ee8ea189be89511721d54/watchdog-6.0.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/c3/f4/0872229324ef69b2c3edec35e84bd57a1289e7d3fe74588048ed8947a323/watchfiles-1.1.1-cp314-cp314-macosx_10_12_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/f2/78/e63be1bf0724eeb4616efb1ae1c9044f7c3953b7957799abb5915bffd38e/websockets-16.0-cp314-cp314-macosx_10_15_x86_64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -204,6 +204,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -241,7 +242,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/7d/7f3d619e951c88ed75c6037b246ddcf2d322812ee8ea189be89511721d54/watchdog-6.0.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/7b/22/16d5331eaed1cb107b873f6ae1b69e9ced582fcf0c59a50cd84f403b1c32/watchfiles-1.1.1-cp314-cp314-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/bb/f4/d3c9220d818ee955ae390cf319a7c7a467beceb24f05ee7aaaa2414345ba/websockets-16.0-cp314-cp314-macosx_11_0_arm64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -285,6 +285,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -321,7 +322,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/d9/c495884c6e548fce18a8f40568ff120bc3a4b7b99813081c8ac0c936fa64/watchdog-6.0.0-py3-none-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/c4/c9/a74487f72d0451524be827e8edec251da0cc1fcf111646a511ae752e1a3d/watchfiles-1.1.1-cp314-cp314-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/8a/f1/ae6b937bf3126b5134ce1f482365fde31a357c784ac51852978768b5eff4/websockets-16.0-cp314-cp314-win_amd64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -377,6 +377,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -427,7 +428,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/b5/e8/dbf020b4d98251a9860752a094d09a65e1b436ad181faf929983f697048f/watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/b4/36/ded8aebea91919485b7bbabbd14f5f359326cb5ec218cd67074d1e426d74/watchfiles-1.1.1-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/63/bc/d3e208028de777087e6fb2b122051a6ff7bbcca0d6df9d9c2bf1dd869ae9/websockets-16.0-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -469,6 +469,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -519,7 +520,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/7d/7f3d619e951c88ed75c6037b246ddcf2d322812ee8ea189be89511721d54/watchdog-6.0.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/c3/f4/0872229324ef69b2c3edec35e84bd57a1289e7d3fe74588048ed8947a323/watchfiles-1.1.1-cp314-cp314-macosx_10_12_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/f2/78/e63be1bf0724eeb4616efb1ae1c9044f7c3953b7957799abb5915bffd38e/websockets-16.0-cp314-cp314-macosx_10_15_x86_64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -560,6 +560,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -610,7 +611,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/7d/7f3d619e951c88ed75c6037b246ddcf2d322812ee8ea189be89511721d54/watchdog-6.0.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/7b/22/16d5331eaed1cb107b873f6ae1b69e9ced582fcf0c59a50cd84f403b1c32/watchfiles-1.1.1-cp314-cp314-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/bb/f4/d3c9220d818ee955ae390cf319a7c7a467beceb24f05ee7aaaa2414345ba/websockets-16.0-cp314-cp314-macosx_11_0_arm64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -654,6 +654,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/cb/cf/2ea7810646e310977b2f756c875b3556dc8893aa706177106712ba8f77f9/flet-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/1c/d7/d184d5667570987ed4dfe596380980d192a26b3c603e0db20db54e50573e/flet_cli-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d1/ea/6a54be2a614902be7898df2011651f8caadff37509ac8eccbd1a17972bf5/flet_desktop-0.84.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl
@@ -703,7 +704,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/db/d9/c495884c6e548fce18a8f40568ff120bc3a4b7b99813081c8ac0c936fa64/watchdog-6.0.0-py3-none-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/c4/c9/a74487f72d0451524be827e8edec251da0cc1fcf111646a511ae752e1a3d/watchfiles-1.1.1-cp314-cp314-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/8a/f1/ae6b937bf3126b5134ce1f482365fde31a357c784ac51852978768b5eff4/websockets-16.0-cp314-cp314-win_amd64.whl
-      - pypi: ./bases/app
       - pypi: ./components/book_store
       - pypi: ./components/file_scanner
       - pypi: ./components/highlight_exporter
@@ -978,6 +978,13 @@ packages:
   requires_dist:
   - flet==0.84.0
   requires_python: '>=3.10'
+- pypi: https://files.pythonhosted.org/packages/4b/48/6de5f581bd87ddacd3b2388abd62f213cb6d7729e3c3573e733103f50eb6/flet_permission_handler-0.84.0-py3-none-any.whl
+  name: flet-permission-handler
+  version: 0.84.0
+  sha256: a2aee6bb90191d3f502c00eb05088b068eae06e3d67ed73b6b66a42cc5d362eb
+  requires_dist:
+  - flet==0.84.0
+  requires_python: '>=3.10'
 - pypi: https://files.pythonhosted.org/packages/01/ba/ebb86a5e1afa86a3e16c05dc5e1cc0807e2957363b393d7fb8e0dd6e121f/flet_web-0.84.0-py3-none-any.whl
   name: flet-web
   version: 0.84.0
@@ -1087,18 +1094,6 @@ packages:
   - markupsafe>=2.0
   - babel>=2.7 ; extra == 'i18n'
   requires_python: '>=3.7'
-- pypi: ./bases/app
-  name: kohighlights-app
-  version: 2.0.0
-  sha256: e22c5d964d96147ea7c6c1be2871087138613758a525198ef970ad9f1e69d575
-  requires_dist:
-  - flet>=0.21.0
-  - kohighlights-models
-  - kohighlights-use-cases
-  - kohighlights-ui
-  - kohighlights-book-store
-  - kohighlights-highlight-merger
-  requires_python: '>=3.10'
 - pypi: ./components/book_store
   name: kohighlights-book-store
   version: 2.0.0
@@ -1124,7 +1119,7 @@ packages:
 - pypi: ./components/highlight_merger
   name: kohighlights-highlight-merger
   version: 2.0.0
-  sha256: dd89ae7aec005b610f3d88ae184bac5ead63a5487945441d02d93147203638cf
+  sha256: e90ad7acc57377f495e2483abf8c9157b65cdd4c6ef9f5bc35ff2807ae86ac9c
   requires_dist:
   - kohighlights-models
   - kohighlights-lua-codec

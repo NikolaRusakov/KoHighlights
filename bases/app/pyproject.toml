@@ -3,18 +3,52 @@ name = "kohighlights-app"
 version = "2.0.0"
 description = "KoHighlights – application base (Flet entry point)"
 requires-python = ">=3.10"
+package-mode = false
 dependencies = [
     "flet>=0.21.0",
-    "kohighlights-models",
-    "kohighlights-use-cases",
-    "kohighlights-ui",
-    "kohighlights-book-store",
-    "kohighlights-highlight-merger",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    # "kohighlights-models",
+    # "kohighlights-use-cases",
+    # "kohighlights-ui",
+    # "kohighlights-book-store",
+    # "kohighlights-highlight-merger",
+    "kohighlights-models @ file:///var/home/nik/oss/KoHighlights/components/models",
+    "kohighlights-lua-codec @ file:///var/home/nik/oss/KoHighlights/components/lua_codec",
+    "kohighlights-highlight-merger @ file:///var/home/nik/oss/KoHighlights/components/highlight_merger",
+    "kohighlights-highlight-exporter @ file:///var/home/nik/oss/KoHighlights/components/highlight_exporter",
+    "kohighlights-file-scanner @ file:///var/home/nik/oss/KoHighlights/components/file_scanner",
+    "kohighlights-book-store @ file:///var/home/nik/oss/KoHighlights/components/book_store",
+    "kohighlights-use-cases @ file:///var/home/nik/oss/KoHighlights/components/use_cases",
+    "kohighlights-ui @ file:///var/home/nik/oss/KoHighlights/components/ui",
+    "flet-permission-handler (>=0.84.0,<0.85.0)"
 ]
+
+# [tool.poetry.dependencies]
+# kohighlights-models            = { path = "../../components/models",            editable = true }
+# kohighlights-use-cases         = { path = "../../components/use_cases",         editable = true }
+# kohighlights-ui                = { path = "../../components/ui",                editable = true }
+# kohighlights-book-store        = { path = "../../components/book_store",        editable = true }
+# kohighlights-highlight-merger  = { path = "../../components/highlight_merger",  editable = true }
+# # more
+# kohighlights-highlight-exporter = { path = "../../components/highlight_exporter", editable = true }
+# kohighlights-file-scanner       = { path = "../../components/file_scanner", editable = true }
+# kohighlights-lua-codec          = { path = "../../components/lua_codec", editable = true }
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+kohighlights-models            = { path = "../../components/models",            editable = true }
+kohighlights-use-cases         = { path = "../../components/use_cases",         editable = true }
+kohighlights-ui                = { path = "../../components/ui",                editable = true }
+kohighlights-book-store        = { path = "../../components/book_store",        editable = true }
+kohighlights-highlight-merger  = { path = "../../components/highlight_merger",  editable = true }
+# more
+kohighlights-highlight-exporter = { path = "../../components/highlight_exporter", editable = true }
+kohighlights-file-scanner       = { path = "../../components/file_scanner", editable = true }
+kohighlights-lua-codec          = { path = "../../components/lua_codec", editable = true }
 
 [tool.flet.dev_packages]
 kohighlights-models             = "../../components/models"
