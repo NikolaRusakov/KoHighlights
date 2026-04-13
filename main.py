@@ -20,21 +20,21 @@ from os.path import (isdir, isfile, join, basename, splitext, dirname, split, ge
 from pprint import pprint
 
 
-if QT4:  # ___ ______________ DEPENDENCIES __________________________
-    from PySide.QtSql import QSqlDatabase, QSqlQuery
-    from PySide.QtCore import (Qt, QTimer, Slot, QThread, QMimeData, QModelIndex,
-                               QByteArray, QPoint)
-    from PySide.QtGui import (QMainWindow, QApplication, QMessageBox, QIcon, QFileDialog,
-                              QTableWidgetItem, QTextCursor, QMenu, QAction, QHeaderView,
-                              QPixmap, QListWidgetItem, QBrush, QColor)
-else:
-    from PySide2.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
-                                   QAction, QMenu, QTableWidgetItem, QListWidgetItem,
-                                   QFileDialog)
-    from PySide2.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
-                                QByteArray)
-    from PySide2.QtSql import QSqlDatabase, QSqlQuery
-    from PySide2.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor
+# if QT4:  # ___ ______________ DEPENDENCIES __________________________
+#     from PySide.QtSql import QSqlDatabase, QSqlQuery
+#     from PySide.QtCore import (Qt, QTimer, Slot, QThread, QMimeData, QModelIndex,
+#                                QByteArray, QPoint)
+#     from PySide.QtGui import (QMainWindow, QApplication, QMessageBox, QIcon, QFileDialog,
+#                               QTableWidgetItem, QTextCursor, QMenu, QAction, QHeaderView,
+#                               QPixmap, QListWidgetItem, QBrush, QColor)
+# else:
+from PySide6.QtWidgets import (QMainWindow, QHeaderView, QApplication, QMessageBox,
+                                QMenu, QTableWidgetItem, QListWidgetItem,
+                                QFileDialog)
+from PySide6.QtCore import (Qt, QTimer, QThread, QModelIndex, Slot, QPoint, QMimeData,
+                            QByteArray)
+from PySide6.QtSql import QSqlDatabase, QSqlQuery
+from PySide6.QtGui import QIcon, QPixmap, QTextCursor, QBrush, QColor, QAction, QActionGroup
 
 from secondary import *
 from gui_main import Ui_Base
@@ -129,16 +129,16 @@ class Base(QMainWindow, Ui_Base):
         self.header_high_view = self.high_table.horizontalHeader()
         self.header_high_view.setDefaultAlignment(Qt.AlignLeft)
         # self.header_high_view.setResizeMode(HIGHLIGHT_H, QHeaderView.Stretch)
-        if QT4:
-            self.file_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
-            self.header_main.setMovable(True)
-            self.high_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
-            self.header_high_view.setMovable(True)
-        else:
-            self.file_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-            self.header_main.setSectionsMovable(True)
-            self.high_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
-            self.header_high_view.setSectionsMovable(True)
+        # if QT4:
+        #     self.file_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
+        #     self.header_main.setMovable(True)
+        #     self.high_table.verticalHeader().setResizeMode(QHeaderView.Fixed)
+        #     self.header_high_view.setMovable(True)
+        # else:
+        self.file_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.header_main.setSectionsMovable(True)
+        self.high_table.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.header_high_view.setSectionsMovable(True)
 
         self.splitter.setCollapsible(0, False)
         self.splitter.setCollapsible(1, False)
@@ -2077,7 +2077,9 @@ class Base(QMainWindow, Ui_Base):
                                     (_("To individual csv files"), MANY_CSV),
                                     (_("Combined to one csv file"), ONE_CSV),
                                     (_("To individual markdown files"), MANY_MD),
-                                    (_("Combined to one markdown file"), ONE_MD)]):
+                                    (_("Combined to one markdown file"), ONE_MD),
+                                    (_("Combined to one json file"), ONE_JSON)
+                                    ]):
             action = QAction(item[0], menu)
             action.triggered.connect(self.export_actions)
             action.setData(item[1])
@@ -2134,7 +2136,7 @@ class Base(QMainWindow, Ui_Base):
             self.last_dir = dir_path
             saved = self.save_multi_files(dir_path, idx, line_break, space)
         # Save from file_table, combine to one file
-        elif idx in [ONE_TEXT, ONE_HTML, ONE_CSV, ONE_MD]:
+        elif idx in [ONE_TEXT, ONE_HTML, ONE_CSV, ONE_MD, ONE_JSON]:
             if idx == ONE_TEXT:
                 ext = "txt"
             elif idx == ONE_HTML:
@@ -2143,6 +2145,8 @@ class Base(QMainWindow, Ui_Base):
                 ext = "csv"
             elif idx == ONE_MD:
                 ext = "md"
+            elif idx == ONE_JSON:
+                ext = "json"
             else:
                 return
             filename = QFileDialog.getSaveFileName(self,
@@ -2284,7 +2288,7 @@ class Base(QMainWindow, Ui_Base):
         # noinspection PyCallByClass
         filename = QFileDialog.getSaveFileName(self, _("Export to file"), self.last_dir,
                                                "text file (*.txt);;html file (*.html);;"
-                                               "csv file (*.csv);;markdown file (*.md)")
+                                               "csv file (*.csv);;markdown file (*.md);;json file (*.json)")
         if filename[0]:
             filename, extra = filename
             encoding = "utf-8"
@@ -2292,6 +2296,7 @@ class Base(QMainWindow, Ui_Base):
             html_out = extra.startswith("html")
             csv_out = extra.startswith("csv")
             md_out = extra.startswith("mark")
+            json_out = extra.startswith("json")
             if text_out:
                 ext = ".txt"
                 text = ""
@@ -2305,6 +2310,9 @@ class Base(QMainWindow, Ui_Base):
             elif md_out:
                 ext = ".md"
                 text = ""
+            elif md_out:
+                ext = ".json"
+                # text = ""
             else:
                 return
             filename = splitext(filename)[0] + ext
@@ -2346,6 +2354,15 @@ class Base(QMainWindow, Ui_Base):
                 text += ("\n---\n### {} [{}]  \n*Page {} [{}]*  \n{}{}{}\n"
                          .format(data["title"], data["authors"], data["page"],
                                  data["date"], chapter, txt, comment))
+            elif json_out:
+                text += json.dump(get_csv_row(data) + "\n")
+                # txt = data["text"].replace("\n", "  \n")
+                # chapter = data["chapter"]
+                # if chapter:
+                #     chapter = "***{0}***\n\n".format(chapter).replace("\n", "  \n")
+                # text += ("\n---\n### {} [{}]  \n*Page {} [{}]*  \n{}{}{}\n"
+                #          .format(data["title"], data["authors"], data["page"],
+                   
             else:
                 print("Unknown format export!")
                 return
@@ -2926,6 +2943,9 @@ class KOHighlights(QApplication):
         elif args.markdown:
             format_ = ONE_MD
             new_ext = ".md"
+        elif args.json:
+            format_ = ONE_JSON
+            new_ext = ".json"
         else:
             format_ = ONE_TEXT
             new_ext = ".txt"

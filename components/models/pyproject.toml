@@ -1,0 +1,16 @@
+[project]
+name = "kohighlights-models"
+version = "2.0.0"
+description = "KoHighlights – shared domain models"
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kohighlights"]
+
+[tool.hatch.build.targets.editable]
+path = "src"

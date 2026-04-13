@@ -2,24 +2,25 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from boot_config import *
 import re
+import json
 import webbrowser
 from functools import partial
 from distutils.version import LooseVersion
 from os.path import join, basename, splitext, isfile
 from pprint import pprint
 
-if QT4:  # ___ ______________ DEPENDENCIES __________________________
-    from PySide.QtCore import Qt, Slot, QObject, Signal, QSize, QPoint, QEvent
-    from PySide.QtGui import (QApplication, QMessageBox, QIcon, QFileDialog, QLineEdit,
-                              QDialog, QWidget, QMovie, QFont, QMenu, QAction, QCursor,
-                              QTableWidget, QCheckBox, QToolButton, QActionGroup,
-                              QTableWidgetItem)
-else:
-    from PySide2.QtCore import QObject, Qt, Signal, QPoint, Slot, QSize, QEvent
-    from PySide2.QtGui import QFont, QMovie, QIcon, QCursor
-    from PySide2.QtWidgets import (QTableWidgetItem, QTableWidget, QMessageBox, QLineEdit,
-                                   QApplication, QWidget, QDialog, QFileDialog,
-                                   QActionGroup, QMenu, QAction, QToolButton, QCheckBox)
+# if QT4:  # ___ ______________ DEPENDENCIES __________________________
+#     from PySide.QtCore import Qt, Slot, QObject, Signal, QSize, QPoint, QEvent
+#     from PySide.QtGui import (QApplication, QMessageBox, QIcon, QFileDialog, QLineEdit,
+#                               QDialog, QWidget, QMovie, QFont, QMenu, QAction, QCursor,
+#                               QTableWidget, QCheckBox, QToolButton, QActionGroup,
+#                               QTableWidgetItem)
+# else:
+from PySide6.QtCore import QObject, Qt, Signal, QPoint, Slot, QSize, QEvent
+from PySide6.QtGui import QFont, QMovie, QIcon, QCursor, QAction, QActionGroup
+from PySide6.QtWidgets import (QTableWidgetItem, QTableWidget, QMessageBox, QLineEdit,
+                                QApplication, QWidget, QDialog, QFileDialog,
+                                QMenu, QToolButton, QCheckBox)
 import requests
 from bs4 import BeautifulSoup
 from slppu import slppu as lua  # https://github.com/noembryo/slppu
@@ -128,6 +129,14 @@ def get_book_text(title, authors, highlights, format_, line_break, space, text):
             h = h.replace("-", "\\-")
             highs.append(h)
         text += nl.join(highs) + "\n---\n"
+    elif format_ == ONE_JSON:
+        highlights_json= {};
+        for idx, high in enumerate(highlights):
+            date_text, high_comment, high_text, page_text, chapter = high
+            highlights_json[idx] = {"title": title, "authors": authors, "page": page_text,
+                        "date": date_text, "text": high_text, "comment": high_comment,
+                        "chapter": chapter}
+        text = json.dumps(highlights_json);
     return text
 
 

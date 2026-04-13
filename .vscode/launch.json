@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "KOHighlights (Flet)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "kohighlights.app.main",
+      "python": "${workspaceFolder}/.pixi/envs/default/bin/python",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "FLET_SECRET_KEY": "dev"
+      },
+      "purpose": ["debug-in-terminal"],
+      "justMyCode": false
+    },
+    {
+      "name": "Debug in terminal",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "console": "integratedTerminal",
+      "cwd": "${fileDirname}",
+      "purpose": ["debug-in-terminal"]
+    }
+  ]
+}

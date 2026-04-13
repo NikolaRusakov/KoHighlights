@@ -1,0 +1,12 @@
+# ── Polylith workspace metadata ─────────────────────────────────────────────
+# Read by polylith-cli to map brick source paths to namespace packages.
+[tool.polylith.bricks]
+"../../bases/app/src"                     = ["kohighlights/app"]
+"../../components/models/src"             = ["kohighlights/models"]
+"../../components/lua_codec/src"          = ["kohighlights/lua_codec"]
+"../../components/book_store/src"         = ["kohighlights/book_store"]
+"../../components/file_scanner/src"       = ["kohighlights/file_scanner"]
+"../../components/highlight_exporter/src" = ["kohighlights/highlight_exporter"]
+"../../components/highlight_merger/src"   = ["kohighlights/highlight_merger"]
+"../../components/use_cases/src"          = ["kohighlights/use_cases"]
+"../../components/ui/src"                 = ["kohighlights/ui"]

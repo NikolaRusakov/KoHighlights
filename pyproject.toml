@@ -1,0 +1,5 @@
+[tool.pytest.ini_options]
+testpaths = ["components", "bases"]
+
+[tool.ruff]
+line-length = 100
