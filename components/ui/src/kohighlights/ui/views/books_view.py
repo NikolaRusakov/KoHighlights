@@ -104,7 +104,7 @@ class BooksView:
                 _c(book.path, book.path),
             ],
             selected=is_sel,
-            on_select_changed=lambda e, b=book: self._toggle(e, b),
+            on_select_change=lambda e, b=book: self._toggle(e, b),
         )
 
     def _toggle(self, e: ft.ControlEvent, book: Book) -> None:

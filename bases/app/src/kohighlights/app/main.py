@@ -20,6 +20,7 @@ from pathlib import Path
 import flet as ft
 
 from kohighlights.book_store import BookStore, SettingsStore
+from kohighlights.file_scanner.scanner import scan_for_books
 from kohighlights.models import (
     AppSettings,
     Book,
@@ -79,16 +80,23 @@ def main(page: ft.Page) -> None:  # noqa: C901
     # =========================================================================
 
     async def _on_scan(e) -> None:
-        await picker.get_directory_path(
+        path = await picker.get_directory_path(
             dialog_title="Select folder to scan for KOReader metadata",
             initial_directory=settings.last_dir or str(Path.home()),
         )
-
-    def _picker_result(e: ft.FilePickerResultEvent) -> None:
-        path = e.path
+        print(f"Selected path: {path}")
         if not path:
             return
         settings.last_dir = path
+        toolbar.set_scanning(True)
+        _picker_result(path)
+
+    def _picker_result(path: str | None) -> None:
+        print(path)
+        if not path:
+            return
+        settings.last_dir = path
+        # _picker_result(e)
         toolbar.set_scanning(True)
 
         def _worker() -> None:
@@ -100,12 +108,29 @@ def main(page: ft.Page) -> None:  # noqa: C901
                     books_view.refresh(state.displayed_books)
                     page.update()
 
-            scan_books.scan_directory(path, _found, state.loaded_paths)
+            if os.path.isdir(path):
+
+                scanned_books_gen = scan_for_books(path)
+                for book in scanned_books_gen:
+                    _found(book)
+                # for root, dirs, files in os.walk(path):
+                #     print(dirs, files)
+                #     # Only process directories ending with .sdr
+                #     if root.endswith(".sdr"):
+                #         for file in files:
+                #             if file.startswith("metadata") and file.endswith(".lua"):
+                #                 lua_file_path = os.path.join(root, file)
+                #                 try:
+                #                     decode_file(lua_file_path)
+                #                 except Exception as exc:
+                #                     print(f"Error decoding {lua_file_path}: {exc}")
+
             books_view.refresh(state.displayed_books)
             toolbar.set_scanning(False)
             page.update()
 
-        threading.Thread(target=_worker, daemon=True).start()
+        page.run_thread(_worker)
+        # _worker()
 
     def _on_export(fmt: ExportFormat, mode: ExportMode) -> None:
         if not state.selected_books:
@@ -347,7 +372,7 @@ def main(page: ft.Page) -> None:  # noqa: C901
         return None
 
     def _snack(message: str) -> None:
-        page.show_snack_bar(ft.SnackBar(ft.Text(message), open=True))
+        page.show_dialog(ft.SnackBar(ft.Text(message), open=True))
 
     def _alert(title: str, body: str) -> None:
         def _close(e):
@@ -373,6 +398,7 @@ def main(page: ft.Page) -> None:  # noqa: C901
 
     # ── UI construction ───────────────────────────────────────────────────
     picker = ft.FilePicker(on_upload=_picker_result)
+
     if hasattr(page, "services"):
         page.services.append(picker)
     else:
