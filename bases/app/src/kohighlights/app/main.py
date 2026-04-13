@@ -79,10 +79,13 @@ def main(page: ft.Page) -> None:  # noqa: C901
     # =========================================================================
 
     async def _on_scan(e) -> None:
-        path = await picker.get_directory_path(
+        await picker.get_directory_path(
             dialog_title="Select folder to scan for KOReader metadata",
             initial_directory=settings.last_dir or str(Path.home()),
         )
+
+    def _picker_result(e: ft.FilePickerResultEvent) -> None:
+        path = e.path
         if not path:
             return
         settings.last_dir = path
@@ -369,7 +372,11 @@ def main(page: ft.Page) -> None:  # noqa: C901
         db_store.close()
 
     # ── UI construction ───────────────────────────────────────────────────
-    picker = ft.FilePicker()  # Service: auto-registers with page._services
+    picker = ft.FilePicker(on_upload=_picker_result)
+    if hasattr(page, "services"):
+        page.services.append(picker)
+    else:
+        page.overlay.append(picker)
     about_dlg = build_about_dialog(page)
     filter_bar = FilterBar(on_change=_on_filter_change)
     export_dlg = ExportDialog(page, on_confirm=_on_export_confirmed)
