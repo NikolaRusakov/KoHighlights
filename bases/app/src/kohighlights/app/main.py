@@ -54,18 +54,19 @@ APP_NAME = "KOHighlights"
 APP_VERSION = "2.0.0"
 
 
-def main(page: ft.Page) -> None:  # noqa: C901
+async def main(page: ft.Page) -> None:  # noqa: C901
     """Build and run the KOHighlights Flet application."""
 
     # ── Bootstrap ────────────────────────────────────────────────────────
-
-    # fph.register_permissions(page, ["filesystem"], on_denied=lambda: page.close())
-    ph = fph.PermissionHandler()
-    ph.request(
-        [fph.Permission.STORAGE, fph.Permission.MANAGE_EXTERNAL_STORAGE],
-        on_denied=lambda: page.close(),
-    )
-    settings_store = SettingsStore()
+    # StoragePaths gives the correct writable path per platform:
+    #   Android → /data/user/0/<pkg>/files/
+    #   iOS     → <sandbox>/Library/Application Support/
+    #   macOS   → ~/Library/Application Support/
+    #   Linux   → ~/.local/share/
+    #   Windows → %APPDATA%\
+    storage_paths = ft.StoragePaths()
+    data_dir = await storage_paths.get_application_support_directory()
+    settings_store = SettingsStore(settings_dir=Path(data_dir) / APP_NAME)
     settings = settings_store.load()
 
     db_store = BookStore(settings.db_path or str(settings_store.default_db_path))

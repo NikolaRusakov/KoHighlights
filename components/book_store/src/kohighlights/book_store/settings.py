@@ -22,14 +22,23 @@ APP_NAME = "KOHighlights"
 
 
 def get_settings_dir() -> Path:
-    """Return the platform-specific directory for application data."""
+    """Return the platform-specific directory for application data.
+
+    On Android/iOS this fallback should not be used — callers should pass
+    the path from ``ft.StoragePaths.get_application_support_directory()``.
+    """
     if sys.platform == "win32":
         base = os.environ.get("APPDATA", Path.home())
         return Path(base) / APP_NAME
     if sys.platform == "darwin":
         return Path.home() / "Library" / "Application Support" / APP_NAME
+    # Android: ANDROID_ROOT env var is set to /system
+    if os.environ.get("ANDROID_ROOT"):
+        raise RuntimeError(
+            "On Android, pass settings_dir from StoragePaths.get_application_support_directory()"
+        )
     # Linux / BSD / other POSIX
-    xdg = os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")
+    xdg = os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".local" / "share"))
     return Path(xdg) / APP_NAME
 
 
