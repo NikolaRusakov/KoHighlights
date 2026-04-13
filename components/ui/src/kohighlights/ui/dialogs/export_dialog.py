@@ -53,10 +53,11 @@ class ExportDialog:
             )
         self._page.update()
 
-    def _on_result(self, e: ft.FilePickerResultEvent) -> None:
-        path = e.path
-        if not path and e.files:
-            path = e.files[0].path
+    def _on_result(self, e: ft.FilePickerUploadEvent) -> None:
+        # TODO: needs handling file export
+        path = e.data
+        # if not path and e.file_name:
+        #     path = e.files[0].path
         if not path:
             return
         if self._fmt is not None and self._mode is not None:

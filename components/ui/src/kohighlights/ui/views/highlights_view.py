@@ -79,7 +79,7 @@ class HighlightsView:
                 _c(str(h.page) if h.page else ""),
                 _c(h.chapter[:60] if h.chapter else ""),
             ],
-            on_select_changed=lambda e, hi=h: self._on_selection([hi]),
+            on_select_change=lambda e, hi=h: self._on_selection([hi]),
         )
 
     def _on_sort(self, e: ft.DataColumnSortEvent) -> None:
