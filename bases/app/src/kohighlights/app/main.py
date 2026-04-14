@@ -52,6 +52,7 @@ from kohighlights.use_cases import (
 
 APP_NAME = "KOHighlights"
 APP_VERSION = "2.0.0"
+MOBILE_BREAKPOINT = 600
 
 
 async def main(page: ft.Page) -> None:  # noqa: C901
@@ -83,6 +84,7 @@ async def main(page: ft.Page) -> None:  # noqa: C901
     page.window.height = settings.window_height
     page.padding = 0
     page.spacing = 0
+    _lr: dict = {}  # mutable layout refs shared across closures
 
     # =========================================================================
     # Event handlers
@@ -239,8 +241,19 @@ async def main(page: ft.Page) -> None:  # noqa: C901
     def _on_view_toggle(mode: ViewMode) -> None:
         state.view_mode = mode
         is_books = mode == ViewMode.BOOKS
-        books_layout.visible = is_books
-        highlights_layout.visible = not is_books
+        if _lr.get("is_mobile"):
+            idx = 0 if is_books else 1
+            _lr["mobile_nav_index"] = idx
+            if page.navigation_bar:
+                page.navigation_bar.selected_index = idx
+                page.navigation_bar.update()
+            if "content_container" in _lr:
+                _lr["content_container"].content = _get_mobile_content()
+                _lr["content_container"].update()
+        else:
+            if "books_layout" in _lr:
+                _lr["books_layout"].visible = is_books
+                _lr["highlights_layout"].visible = not is_books
         if not is_books:
             all_highs = scan_books.get_all_highlights(state.books)
             state.all_highlights = all_highs
@@ -447,46 +460,262 @@ async def main(page: ft.Page) -> None:  # noqa: C901
         on_db_toggle=_on_db_toggle,
     )
 
-    # ── Layout ────────────────────────────────────────────────────────────
-    books_left = ft.Column(
-        [
-            ft.Container(books_view.control, expand=True),
-            ft.Divider(height=1),
-            book_info.control,
-        ],
-        expand=True,
-        spacing=0,
-    )
+    # ── Layout helpers ────────────────────────────────────────────────────
 
-    books_layout = ft.Container(
-        content=ft.Row(
+    def _is_mobile() -> bool:
+        w = page.width
+        return w is not None and w < MOBILE_BREAKPOINT
+
+    def _get_mobile_content() -> ft.Control:
+        idx = _lr.get("mobile_nav_index", 0)
+        if idx == 1:
+            return highlights_view.control
+        if idx == 2:
+            return ft.Column(
+                [book_info.control, ft.Divider(height=1), highlights_panel.control],
+                expand=True,
+                spacing=0,
+            )
+        return books_view.mobile_control
+
+    def _on_mobile_nav_change(e: ft.ControlEvent) -> None:
+        idx = e.control.selected_index
+        _lr["mobile_nav_index"] = idx
+        state.view_mode = ViewMode.BOOKS if idx == 0 else ViewMode.HIGHLIGHTS
+        if idx == 1 and not state.all_highlights:
+            all_highs = scan_books.get_all_highlights(state.books)
+            state.all_highlights = all_highs
+            state.displayed_highlights = list(all_highs)
+            highlights_view.refresh(state.displayed_highlights)
+        if "content_container" in _lr:
+            _lr["content_container"].content = _get_mobile_content()
+            _lr["content_container"].update()
+
+    def _wrap_drawer(fn):
+        def _wrapped(e):
+            if page.drawer:
+                page.drawer.open = False
+                page.update()
+            fn(e)
+
+        return _wrapped
+
+    def _wrap_drawer_async(fn):
+        async def _wrapped(e):
+            if page.drawer:
+                page.drawer.open = False
+                page.update()
+            await fn(e)
+
+        return _wrapped
+
+    def _open_drawer(e) -> None:
+        if page.drawer:
+            page.drawer.open = True
+            page.update()
+
+    def _build_desktop() -> None:
+        _lr["is_mobile"] = False
+        page.appbar = None
+        page.drawer = None
+        page.navigation_bar = None
+
+        books_left = ft.Column(
             [
-                ft.Container(books_left, expand=3),
-                ft.VerticalDivider(width=1, thickness=1),
-                ft.Container(highlights_panel.control, expand=2, padding=8),
+                ft.Container(books_view.control, expand=True),
+                ft.Divider(height=1),
+                book_info.control,
             ],
             expand=True,
             spacing=0,
-        ),
-        expand=True,
-        visible=(state.view_mode == ViewMode.BOOKS),
-    )
-    highlights_layout = ft.Container(
-        content=highlights_view.control,
-        expand=True,
-        visible=(state.view_mode == ViewMode.HIGHLIGHTS),
-    )
-
-    page.add(
-        toolbar.control,
-        filter_bar.control,
-        ft.Divider(height=1),
-        ft.Container(
-            content=ft.Stack([books_layout, highlights_layout]),
+        )
+        books_l = ft.Container(
+            content=ft.Row(
+                [
+                    ft.Container(books_left, expand=3),
+                    ft.VerticalDivider(width=1, thickness=1),
+                    ft.Container(highlights_panel.control, expand=2, padding=8),
+                ],
+                expand=True,
+                spacing=0,
+            ),
             expand=True,
-            padding=ft.Padding.symmetric(horizontal=4),
-        ),
-    )
+            visible=(state.view_mode == ViewMode.BOOKS),
+        )
+        highs_l = ft.Container(
+            content=highlights_view.control,
+            expand=True,
+            visible=(state.view_mode == ViewMode.HIGHLIGHTS),
+        )
+        _lr["books_layout"] = books_l
+        _lr["highlights_layout"] = highs_l
+
+        page.controls.clear()
+        page.controls.extend(
+            [
+                toolbar.control,
+                filter_bar.control,
+                ft.Divider(height=1),
+                ft.Container(
+                    content=ft.Stack([books_l, highs_l]),
+                    expand=True,
+                    padding=ft.Padding.symmetric(horizontal=4),
+                ),
+            ]
+        )
+        page.update()
+
+    def _build_mobile() -> None:
+        _lr["is_mobile"] = True
+        _lr.setdefault("mobile_nav_index", 0)
+
+        page.appbar = ft.AppBar(
+            leading=ft.IconButton(
+                ft.Icons.MENU,
+                tooltip="Menu",
+                on_click=_open_drawer,
+            ),
+            title=ft.Text(APP_NAME),
+            center_title=False,
+            actions=[
+                ft.IconButton(
+                    ft.Icons.FOLDER_OPEN_OUTLINED,
+                    tooltip="Scan folder",
+                    on_click=_wrap_drawer_async(_on_scan),
+                ),
+                ft.IconButton(
+                    ft.Icons.FILTER_LIST,
+                    tooltip="Filter",
+                    on_click=_wrap_drawer(_on_filter_toggle),
+                ),
+            ],
+        )
+
+        page.drawer = ft.NavigationDrawer(
+            controls=[
+                ft.Container(height=12),
+                ft.Text(
+                    APP_NAME,
+                    style=ft.TextThemeStyle.TITLE_MEDIUM,
+                    # weight=ft.FontWeight.BOLD,
+                    # padding=ft.padding.only(left=16, bottom=4),
+                ),
+                ft.Divider(),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.FOLDER_OPEN_OUTLINED),
+                    title=ft.Text("Scan folder"),
+                    on_click=_wrap_drawer_async(_on_scan),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.IOS_SHARE),
+                    title=ft.Text("Export TXT"),
+                    on_click=_wrap_drawer(
+                        lambda e: _on_export(ExportFormat.TXT, ExportMode.MANY)
+                    ),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.TABLE_CHART),
+                    title=ft.Text("Export CSV"),
+                    on_click=_wrap_drawer(
+                        lambda e: _on_export(ExportFormat.CSV, ExportMode.MANY)
+                    ),
+                ),
+                ft.Divider(),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.MERGE),
+                    title=ft.Text("Merge"),
+                    on_click=_wrap_drawer(lambda e: _on_merge(True, False)),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.SYNC),
+                    title=ft.Text("Sync position"),
+                    on_click=_wrap_drawer(lambda e: _on_merge(False, True)),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.ARCHIVE),
+                    title=ft.Text("Archive"),
+                    on_click=_wrap_drawer(_on_archive),
+                ),
+                ft.Divider(),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.DELETE_OUTLINE),
+                    title=ft.Text("Delete info"),
+                    on_click=_wrap_drawer(lambda e: _on_delete(0)),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.DELETE_FOREVER),
+                    title=ft.Text("Delete + files"),
+                    on_click=_wrap_drawer(lambda e: _on_delete(1)),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.DELETE_SWEEP),
+                    title=ft.Text("Delete missing"),
+                    on_click=_wrap_drawer(lambda e: _on_delete(2)),
+                ),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.CLEAR_ALL),
+                    title=ft.Text("Clear list"),
+                    on_click=_wrap_drawer(_on_clear),
+                ),
+                ft.Divider(),
+                ft.ListTile(
+                    leading=ft.Icon(ft.Icons.INFO_OUTLINE),
+                    title=ft.Text("About"),
+                    on_click=_wrap_drawer(_on_about),
+                ),
+            ],
+        )
+
+        page.navigation_bar = ft.NavigationBar(
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon=ft.Icons.MENU_BOOK_OUTLINED,
+                    selected_icon=ft.Icons.MENU_BOOK,
+                    label="Books",
+                ),
+                ft.NavigationBarDestination(
+                    icon=ft.Icons.FORMAT_QUOTE_OUTLINED,
+                    selected_icon=ft.Icons.FORMAT_QUOTE,
+                    label="Highlights",
+                ),
+                ft.NavigationBarDestination(
+                    icon=ft.Icons.INFO_OUTLINE,
+                    selected_icon=ft.Icons.INFO,
+                    label="Book Info",
+                ),
+            ],
+            selected_index=_lr.get("mobile_nav_index", 0),
+            on_change=_on_mobile_nav_change,
+        )
+
+        content_container = ft.Container(
+            content=_get_mobile_content(),
+            expand=True,
+        )
+        _lr["content_container"] = content_container
+
+        page.controls.clear()
+        page.controls.extend(
+            [
+                filter_bar.control,
+                content_container,
+            ]
+        )
+        page.update()
+
+    def _on_resized(e=None) -> None:
+        was_mobile = _lr.get("is_mobile", False)
+        now_mobile = _is_mobile()
+        if now_mobile != was_mobile:
+            if now_mobile:
+                _build_mobile()
+            else:
+                _build_desktop()
+
+    if _is_mobile():
+        _build_mobile()
+    else:
+        _build_desktop()
 
     # ── Initial data load ─────────────────────────────────────────────────
     if settings.db_mode:
@@ -494,6 +723,7 @@ async def main(page: ft.Page) -> None:  # noqa: C901
 
     page.on_keyboard_event = _on_keyboard
     page.on_window_event = _on_window_event
+    page.on_resized = _on_resized
     page.update()
 
 

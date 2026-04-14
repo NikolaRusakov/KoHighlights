@@ -30,6 +30,7 @@ class BooksView:
         self._sort_col = 6
         self._sort_asc = False
 
+        self._current_books: list[Book] = []
         self._table = ft.DataTable(
             columns=self._make_columns(),
             rows=[],
@@ -42,6 +43,8 @@ class BooksView:
             data_row_min_height=28,
             data_row_max_height=40,
         )
+        self._mobile_list = ft.ListView(expand=True, spacing=2, padding=8)
+        self.mobile_control = ft.Column([self._mobile_list], expand=True)
         self.control = ft.Column(
             [ft.Row([self._table], scroll=ft.ScrollMode.AUTO)],
             scroll=ft.ScrollMode.AUTO,
@@ -67,8 +70,17 @@ class BooksView:
         ]
 
     def refresh(self, books: list[Book]) -> None:
+        self._current_books = list(books)
         self._table.rows = [self._make_row(b) for b in books]
-        self._table.update()
+        self._mobile_list.controls = [self._make_tile(b) for b in books]
+        try:
+            self._table.update()
+        except Exception:
+            pass
+        try:
+            self._mobile_list.update()
+        except Exception:
+            pass
 
     def clear_selection(self) -> None:
         self._selected.clear()
@@ -117,6 +129,59 @@ class BooksView:
         ]
         self._on_selection(self._state.selected_books)
         self._table.update()
+
+    def _make_tile(self, book: Book) -> ft.Card:
+        is_sel = book.path in self._selected
+        parts = []
+        if book.display_authors:
+            parts.append(book.display_authors)
+        if book.highlight_count:
+            parts.append(f"{book.highlight_count} highlights")
+        if book.modified_date:
+            parts.append(book.modified_date)
+        subtitle = " · ".join(parts) if parts else None
+        color = ft.Colors.RED_900 if book.status == "abandoned" else None
+
+        return ft.Card(
+            content=ft.ListTile(
+                leading=ft.Icon(
+                    ft.Icons.CHECK_BOX if is_sel else ft.Icons.CHECK_BOX_OUTLINE_BLANK,
+                    color=ft.Colors.PRIMARY if is_sel else ft.Colors.OUTLINE,
+                    size=20,
+                ),
+                title=ft.Text(
+                    book.display_title,
+                    weight=ft.FontWeight.W_500,
+                    max_lines=2,
+                    overflow=ft.TextOverflow.ELLIPSIS,
+                    color=color,
+                ),
+                subtitle=ft.Text(
+                    subtitle,
+                    color=ft.Colors.SECONDARY,
+                    size=12,
+                    max_lines=1,
+                    overflow=ft.TextOverflow.ELLIPSIS,
+                ) if subtitle else None,
+                on_click=lambda _, b=book: self._toggle_mobile(b),
+            ),
+            margin=ft.margin.symmetric(horizontal=4, vertical=2),
+        )
+
+    def _toggle_mobile(self, book: Book) -> None:
+        if book.path in self._selected:
+            self._selected.discard(book.path)
+        else:
+            self._selected.add(book.path)
+        self._state.selected_books = [
+            b for b in self._state.books if b.path in self._selected
+        ]
+        self._on_selection(self._state.selected_books)
+        self._mobile_list.controls = [self._make_tile(b) for b in self._current_books]
+        try:
+            self._mobile_list.update()
+        except Exception:
+            pass
 
     def _on_sort(self, e: ft.DataColumnSortEvent) -> None:
         self._sort_col = e.column_index

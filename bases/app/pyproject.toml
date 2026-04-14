@@ -76,3 +76,7 @@ copyright = "Copyright (C) 2020-2026 by Doto Solutions"
 
 [tool.flet.app]
 path = "src/kohighlights/app"
+
+# [tool.flet.android.signing]
+# key_alias = "upload"
+# key_store = "./upload-keystore.jks"
