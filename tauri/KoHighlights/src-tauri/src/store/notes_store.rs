@@ -41,13 +41,13 @@ impl NotesStore {
         let note = stmt
             .query_row(duckdb::params![title, content, book_md5, page_id], |row| {
                 Ok(Note {
-                    id: row.get(0).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    title: row.get(1).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    content: row.get(2).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    book_md5: row.get(3).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    page_id: row.get(4).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    created_at: row.get(5).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    updated_at: row.get(6).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
+                    id: row.get(0)?,
+                    title: row.get(1)?,
+                    content: row.get(2)?,
+                    book_md5: row.get(3)?,
+                    page_id: row.get(4)?,
+                    created_at: row.get(5)?,
+                    updated_at: row.get(6)?,
                 })
             })
             .map_err(|e| AppError::DuckDB(e.to_string()))?;
@@ -64,21 +64,17 @@ impl NotesStore {
         let result = stmt
             .query_row(duckdb::params![id], |row| {
                 Ok(Note {
-                    id: row.get(0).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    title: row.get(1).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    content: row.get(2).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    book_md5: row.get(3).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    page_id: row.get(4).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    created_at: row.get(5).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    updated_at: row.get(6).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
+                    id: row.get(0)?,
+                    title: row.get(1)?,
+                    content: row.get(2)?,
+                    book_md5: row.get(3)?,
+                    page_id: row.get(4)?,
+                    created_at: row.get(5)?,
+                    updated_at: row.get(6)?,
                 })
             });
 
-        match result {
-            Ok(note) => Ok(Some(note)),
-            Err(duckdb::Error::InvalidQuery { .. }) => Ok(None),
-            Err(e) => Err(AppError::DuckDB(e.to_string())),
-        }
+        result.map(Some).map_err(|e| AppError::DuckDB(e.to_string()))
     }
 
     pub fn list_notes(&self, book_md5: Option<&str>) -> Result<Vec<Note>> {
@@ -92,13 +88,13 @@ impl NotesStore {
         let notes = stmt
             .query_map([], |row| {
                 Ok(Note {
-                    id: row.get(0).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    title: row.get(1).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    content: row.get(2).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    book_md5: row.get(3).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    page_id: row.get(4).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    created_at: row.get(5).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    updated_at: row.get(6).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
+                    id: row.get(0)?,
+                    title: row.get(1)?,
+                    content: row.get(2)?,
+                    book_md5: row.get(3)?,
+                    page_id: row.get(4)?,
+                    created_at: row.get(5)?,
+                    updated_at: row.get(6)?,
                 })
             })
             .map_err(|e| AppError::DuckDB(e.to_string()))?;
@@ -119,13 +115,13 @@ impl NotesStore {
         let note = stmt
             .query_row(duckdb::params![title, content, id], |row| {
                 Ok(Note {
-                    id: row.get(0).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    title: row.get(1).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    content: row.get(2).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    book_md5: row.get(3).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    page_id: row.get(4).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    created_at: row.get(5).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    updated_at: row.get(6).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
+                    id: row.get(0)?,
+                    title: row.get(1)?,
+                    content: row.get(2)?,
+                    book_md5: row.get(3)?,
+                    page_id: row.get(4)?,
+                    created_at: row.get(5)?,
+                    updated_at: row.get(6)?,
                 })
             })
             .map_err(|e| AppError::DuckDB(e.to_string()))?;
@@ -149,13 +145,13 @@ impl NotesStore {
         let notes = stmt
             .query_map([], |row| {
                 Ok(Note {
-                    id: row.get(0).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    title: row.get(1).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    content: row.get(2).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    book_md5: row.get(3).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    page_id: row.get(4).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    created_at: row.get(5).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
-                    updated_at: row.get(6).map_err(|e| duckdb::Error::InvalidQuery { message: e.to_string(), sql: String::new() })?,
+                    id: row.get(0)?,
+                    title: row.get(1)?,
+                    content: row.get(2)?,
+                    book_md5: row.get(3)?,
+                    page_id: row.get(4)?,
+                    created_at: row.get(5)?,
+                    updated_at: row.get(6)?,
                 })
             })
             .map_err(|e| AppError::DuckDB(e.to_string()))?;

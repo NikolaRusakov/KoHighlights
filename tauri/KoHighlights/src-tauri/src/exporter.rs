@@ -172,7 +172,7 @@ fn export_books_merged(
             for book in books {
                 content.push_str(&format!("\n\n{} - {}\n", book.authors, book.title));
             }
-            (ext, content)
+            ("txt", content)
         }
     };
 

@@ -51,6 +51,7 @@ pub fn merge_two_books(
             .collect();
 
         let duplicates = book_a.highlights.len() + book_b.highlights.len() - new_in_a.len() - new_in_b.len();
+        let added = new_in_a.len() + new_in_b.len();
 
         // Update in-memory models
         book_a.highlights.extend(new_in_a);
@@ -61,7 +62,7 @@ pub fn merge_two_books(
 
         result.book_a = book_a.clone();
         result.book_b = book_b.clone();
-        result.added = new_in_a.len() + new_in_b.len();
+        result.added = added;
         result.duplicates = duplicates;
 
         // Write back to disk

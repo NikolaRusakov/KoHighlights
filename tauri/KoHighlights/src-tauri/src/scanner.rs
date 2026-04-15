@@ -129,12 +129,12 @@ fn raw_to_book(path: &Path, raw_data: serde_json::Value, original_header: String
     let md5 = obj
         .get("partial_md5_checksum")
         .and_then(|v| v.as_str())
+        .map(|s| s.to_string())
         .unwrap_or_else(|| {
             let digest = md5::compute(path.to_string_lossy().as_bytes());
             let hex = format!("{:x}", digest);
-            &hex[..8.min(hex.len())]
-        })
-        .to_string();
+            hex[..8.min(hex.len())].to_string()
+        });
 
     let modified_date = fs::metadata(path)
         .ok()
@@ -144,7 +144,7 @@ fn raw_to_book(path: &Path, raw_data: serde_json::Value, original_header: String
                 .duration_since(std::time::UNIX_EPOCH)
                 .ok()?;
             let secs = duration.as_secs() as i64;
-            chrono::DateTime::<chrono::Utc>::from_timestamp(secs, 0).ok()
+            chrono::DateTime::<chrono::Utc>::from_timestamp(secs, 0)
         })
         .map(|dt| dt.format("%Y-%m-%d %H:%M:%S").to_string())
         .unwrap_or_default();

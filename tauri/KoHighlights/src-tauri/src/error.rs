@@ -6,16 +6,16 @@ pub enum AppError {
     Lua(String),
 
     #[error("SQLite error: {0}")]
-    Sqlite(#[from] rusqlite::Error),
+    Sqlite(String),
 
     #[error("DuckDB error: {0}")]
     DuckDB(String),
 
     #[error("IO error: {0}")]
-    Io(#[from] std::io::Error),
+    Io(String),
 
     #[error("JSON error: {0}")]
-    Json(#[from] serde_json::Error),
+    Json(String),
 
     #[error("{0}")]
     Logic(String),
@@ -30,9 +30,27 @@ impl From<mlua::Error> for AppError {
     }
 }
 
+impl From<rusqlite::Error> for AppError {
+    fn from(err: rusqlite::Error) -> Self {
+        AppError::Sqlite(err.to_string())
+    }
+}
+
 impl From<duckdb::Error> for AppError {
     fn from(err: duckdb::Error) -> Self {
         AppError::DuckDB(err.to_string())
+    }
+}
+
+impl From<std::io::Error> for AppError {
+    fn from(err: std::io::Error) -> Self {
+        AppError::Io(err.to_string())
+    }
+}
+
+impl From<serde_json::Error> for AppError {
+    fn from(err: serde_json::Error) -> Self {
+        AppError::Json(err.to_string())
     }
 }
 
