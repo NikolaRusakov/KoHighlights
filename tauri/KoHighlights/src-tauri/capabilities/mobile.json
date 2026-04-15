@@ -2,15 +2,15 @@
   "$schema": "../gen/schemas/mobile-schema.json",
   "identifier": "mobile",
   "description": "Mobile capability for iOS and Android",
-  "platforms": ["android", "ios"],
+  "platforms": ["android", "iOS"],
   "windows": ["main"],
   "permissions": [
     "core:default",
     "fs:allow-read-file",
     "fs:allow-write-file",
     "fs:allow-read-dir",
-    "fs:allow-create-dir",
-    "fs:allow-remove-file",
+    "fs:allow-mkdir",
+    "fs:allow-remove",
     "dialog:allow-open",
     "dialog:allow-message"
   ]

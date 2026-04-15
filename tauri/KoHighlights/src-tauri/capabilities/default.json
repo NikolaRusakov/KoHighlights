@@ -9,9 +9,9 @@
     "fs:allow-read-file",
     "fs:allow-write-file",
     "fs:allow-read-dir",
-    "fs:allow-create-dir",
-    "fs:allow-remove-file",
-    "fs:allow-remove-dir",
+    "fs:allow-mkdir",
+    "fs:allow-remove",
+    "fs:allow-remove",
     "dialog:allow-open",
     "dialog:allow-save",
     "dialog:allow-message"
