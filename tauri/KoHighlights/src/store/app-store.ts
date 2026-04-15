@@ -33,6 +33,8 @@ export interface AppStore {
   setSettings: (settings: AppSettings | null) => void;
   clearAll: () => void;
   replaceBook: (updated: Book) => void;
+  removeBooks: (md5s: string[]) => void;
+  setScanning: (scanning: boolean) => void;
 }
 
 const defaultSettings: AppSettings = {
@@ -122,4 +124,14 @@ export const useAppStore = create<AppStore>((set) => ({
       selectedBooks: state.selectedBooks.map((b) => (b.md5 === updated.md5 ? updated : b)),
       displayedBooks: state.displayedBooks.map((b) => (b.md5 === updated.md5 ? updated : b)),
     })),
+
+  removeBooks: (md5s) =>
+    set((state) => ({
+      books: state.books.filter((b) => !md5s.includes(b.md5)),
+      selectedBooks: state.selectedBooks.filter((b) => !md5s.includes(b.md5)),
+      displayedBooks: state.displayedBooks.filter((b) => !md5s.includes(b.md5)),
+    })),
+
+  setScanning: (scanning) =>
+    set({ isScanning: scanning }),
 }));
