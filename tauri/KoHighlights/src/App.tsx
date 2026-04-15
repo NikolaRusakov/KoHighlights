@@ -3,11 +3,9 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useAppStore } from '@/store/app-store';
 import { loadSettings } from '@/api';
-
-// Placeholder pages (to be implemented)
-const BooksPage = () => <div>Books Page - WIP</div>;
-const HighlightsPage = () => <div>Highlights Page - WIP</div>;
-const NotesPage = () => <div>Notes Page - WIP</div>;
+import { BooksPage } from '@/pages/BooksPage';
+import { HighlightsPage } from '@/pages/HighlightsPage';
+import { NotesPage } from '@/pages/NotesPage';
 
 const queryClient = new QueryClient();
 
