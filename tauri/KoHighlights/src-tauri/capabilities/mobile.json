@@ -1,19 +1,17 @@
 {
-  "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "default",
-  "description": "Desktop capability for KoHighlights",
+  "$schema": "../gen/schemas/mobile-schema.json",
+  "identifier": "mobile",
+  "description": "Mobile capability for iOS and Android",
+  "platforms": ["android", "ios"],
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default",
     "fs:allow-read-file",
     "fs:allow-write-file",
     "fs:allow-read-dir",
     "fs:allow-create-dir",
     "fs:allow-remove-file",
-    "fs:allow-remove-dir",
     "dialog:allow-open",
-    "dialog:allow-save",
     "dialog:allow-message"
   ]
 }

@@ -1,50 +1,36 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useAppStore } from '@/store/app-store';
+import { loadSettings } from '@/api';
+
+// Placeholder pages (to be implemented)
+const BooksPage = () => <div>Books Page - WIP</div>;
+const HighlightsPage = () => <div>Highlights Page - WIP</div>;
+const NotesPage = () => <div>Notes Page - WIP</div>;
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const { setSettings } = useAppStore();
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  useEffect(() => {
+    // Load settings on startup
+    loadSettings()
+      .then(setSettings)
+      .catch((err) => console.error('Failed to load settings:', err));
+  }, [setSettings]);
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<BooksPage />} />
+          <Route path="/highlights" element={<HighlightsPage />} />
+          <Route path="/notes" element={<NotesPage />} />
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
